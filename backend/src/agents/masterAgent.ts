@@ -132,7 +132,7 @@ Return only valid JSON, no other text. Example:
       jobId
     );
 
-    // Generate report
+    // Generate report with enhanced data
     const reportId = await generateReport({
       jobId,
       queryText,
@@ -140,6 +140,10 @@ Return only valid JSON, no other text. Example:
       clinicalResult,
       patentResult,
       confidence: synthesisResult.overallConfidence,
+      // Enhanced fields
+      confidenceDecomposition: synthesisResult.confidenceDecomposition,
+      marketInsights: synthesisResult.marketInsights,
+      patentCliff: patentResult.patentCliff,
     });
 
     // Cache the result

@@ -1,4 +1,11 @@
-import { ClinicalAgentResult, PatentAgentResult, Opportunity } from './agent';
+import { 
+  ClinicalAgentResult, 
+  PatentAgentResult, 
+  Opportunity, 
+  ConfidenceDecomposition, 
+  MarketInsights,
+  PatentCliffData
+} from './agent';
 
 export interface ReportPayload {
   queryText: string;
@@ -8,6 +15,11 @@ export interface ReportPayload {
   patentSummary: PatentAgentResult;
   confidence: number;
   recommendations: string[];
+  // Enhanced fields
+  confidenceDecomposition?: ConfidenceDecomposition;
+  marketInsights?: MarketInsights;
+  patentCliff?: PatentCliffData;
+  suggestedQueries?: string[];
 }
 
 export interface ReportResponse {
@@ -20,4 +32,9 @@ export interface ReportResponse {
   patentSummary: PatentAgentResult;
   recommendations: string[];
   pdfUrl: string;
+  // Enhanced fields
+  confidenceDecomposition?: ConfidenceDecomposition;
+  marketInsights?: MarketInsights;
+  patentCliff?: PatentCliffData;
+  suggestedQueries?: string[];
 }

@@ -43,6 +43,9 @@ export async function runClinicalTrialsAgent(
         if (!existing.citations.includes(trial.citations)) {
           existing.citations.push(trial.citations);
         }
+        if (!existing.countries.includes(trial.country)) {
+          existing.countries.push(trial.country);
+        }
       } else {
         moleculeMap.set(trial.molecule, {
           molecule: trial.molecule,
@@ -50,6 +53,7 @@ export async function runClinicalTrialsAgent(
           phases: { [trial.phase]: 1 },
           sponsors: [trial.sponsor],
           citations: [trial.citations],
+          countries: [trial.country],
         });
       }
     }

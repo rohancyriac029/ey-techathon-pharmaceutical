@@ -43,6 +43,11 @@ router.get('/:jobId/report', async (req, res) => {
       recommendations: reportData?.recommendations || [],
       pdfUrl: `/api/reports/${report.id}/pdf`,
       createdAt: report.createdAt,
+      // Enhanced fields
+      confidenceDecomposition: reportData?.confidenceDecomposition || null,
+      marketInsights: reportData?.marketInsights || null,
+      patentCliff: reportData?.patentCliff || null,
+      suggestedQueries: reportData?.suggestedQueries || [],
     });
   } catch (error) {
     console.error('Get report error:', error);

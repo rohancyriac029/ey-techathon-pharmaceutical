@@ -16,12 +16,59 @@ export interface AgentTraceEvent {
   detail?: string;
 }
 
+// Score Breakdown for Explainability
+export interface ScoreBreakdown {
+  baseScore: number;
+  trialScore: number;
+  ftoAdjustment: number;
+  phaseBonus: number;
+  competitionPenalty: number;
+  licensingBonus: number;
+  total: number;
+}
+
+// Competitive Analysis
+export type CompetitiveIntensity = 'UNDERCROWDED' | 'COMPETITIVE' | 'SATURATED';
+
+export interface CompetitiveAnalysis {
+  intensity: CompetitiveIntensity;
+  sponsorCount: number;
+  trialCount: number;
+  jurisdictionCount: number;
+  indexScore: number;
+}
+
+// Licensing Analysis
+export type LicensingSignal = 'STRONG' | 'MODERATE' | 'WEAK' | 'NONE';
+
+export interface LicensingAnalysis {
+  signal: LicensingSignal;
+  reasons: string[];
+  phase2Trials: number;
+  phase3Trials: number;
+  sponsorDiversity: number;
+}
+
+// Geographic Readiness
+export interface GeoReadiness {
+  country: string;
+  readinessScore: number;
+  hasTrials: boolean;
+  hasFavorablePatent: boolean;
+  sponsorPresence: boolean;
+}
+
+// Enhanced Opportunity
 export interface Opportunity {
   molecule: string;
   rank: number;
   confidence: number;
   rationale: string;
   ftoFlag: string;
+  scoreBreakdown?: ScoreBreakdown;
+  competitiveAnalysis?: CompetitiveAnalysis;
+  licensingAnalysis?: LicensingAnalysis;
+  geoReadiness?: GeoReadiness[];
 }
 
 export interface MoleculeTrialData {
@@ -30,6 +77,7 @@ export interface MoleculeTrialData {
   phases: Record<string, number>;
   sponsors: string[];
   citations: string[];
+  countries: string[];
 }
 
 export interface MoleculePatentData {
@@ -39,6 +87,44 @@ export interface MoleculePatentData {
   latestExpiry?: string;
   ftoFlag: string;
   citations: string[];
+  yearsToExpiry?: number;
+}
+
+// Patent Cliff Data
+export interface PatentCliffEntry {
+  molecule: string;
+  latestExpiry: string;
+  jurisdictions: string[];
+  yearsToExpiry: number;
+}
+
+export interface PatentCliffData {
+  expiring1Year: PatentCliffEntry[];
+  expiring3Years: PatentCliffEntry[];
+  expiring5Years: PatentCliffEntry[];
+  alreadyExpired: PatentCliffEntry[];
+}
+
+// Confidence Decomposition
+export interface ConfidenceDecomposition {
+  overall: number;
+  dataConfidence: number;
+  aiConfidence: number;
+  breakdown: {
+    trialDataScore: number;
+    patentDataScore: number;
+    aiAnalysisScore: number;
+  };
+}
+
+// Market Insights
+export interface MarketInsights {
+  totalMoleculesAnalyzed: number;
+  lowFtoCount: number;
+  mediumFtoCount: number;
+  highFtoCount: number;
+  avgCompetitionIndex: number;
+  strongLicensingCandidates: number;
 }
 
 export interface JobStatus {
@@ -61,7 +147,36 @@ export interface ReportResponse {
   recommendations: string[];
   pdfUrl: string;
   createdAt: string;
+  // Enhanced fields
+  confidenceDecomposition?: ConfidenceDecomposition;
+  marketInsights?: MarketInsights;
+  patentCliff?: PatentCliffData;
+  suggestedQueries?: string[];
 }
+
+// Query Templates
+export const QUERY_TEMPLATES = [
+  {
+    label: '🇮🇳 India Generic Entry Scan',
+    query: 'Find respiratory molecules with LOW patent risk suitable for generic entry in India',
+  },
+  {
+    label: '📋 Licensing-Ready Phase II Assets',
+    query: 'Show Phase II molecules with strong licensing signals and low competition',
+  },
+  {
+    label: '📅 Patent Cliff Next 3 Years',
+    query: 'Find molecules with patents expiring in the next 3 years for generic development',
+  },
+  {
+    label: '🧬 Oncology Opportunities',
+    query: 'Analyze oncology molecules with favorable FTO and active clinical trials',
+  },
+  {
+    label: '💊 Diabetes Market Analysis',
+    query: 'Find diabetes molecules in Phase II/III with licensing potential',
+  },
+];
 
 export const api = {
   createQuery: async (queryText: string) => {
