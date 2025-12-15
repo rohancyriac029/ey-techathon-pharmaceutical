@@ -1,0 +1,51 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Job {
+  id        String   @id @default(cuid())
+  queryText String
+  status    String   // "pending" | "running" | "completed" | "error"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  resultId  String?
+  trace     String?  // JSON string for agent execution trace
+  cacheKey  String?
+  report    Report?
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  jobId      String   @unique
+  summary    String
+  confidence Float
+  pdfPath    String?
+  data       String?  // JSON string for full report data
+  createdAt  DateTime @default(now())
+  job        Job      @relation(fields: [jobId], references: [id])
+}
+
+model ClinicalTrial {
+  id        String @id @default(cuid())
+  condition String
+  molecule  String
+  phase     String
+  sponsor   String
+  country   String
+  citations String
+}
+
+model Patent {
+  id           String   @id @default(cuid())
+  molecule     String
+  jurisdiction String
+  status       String
+  expiryDate   DateTime
+  ftoFlag      String
+  citations    String
+}

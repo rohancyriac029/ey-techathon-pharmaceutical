@@ -1,0 +1,13 @@
+{
+  "name": "eytechpharmaceu",
+  "version": "1.0.0",
+  "description": "Pharmaceutical Intelligence Platform with AI agents",
+  "scripts": {
+    "start": "powershell -ExecutionPolicy Bypass -File start.ps1",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev"
+  },
+  "keywords": ["pharmaceutical", "ai", "gemini", "drug-discovery"],
+  "author": "",
+  "license": "ISC"
+}
