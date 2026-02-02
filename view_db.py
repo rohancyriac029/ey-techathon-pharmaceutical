@@ -119,8 +119,13 @@ def view_database(db_path):
         for row in cursor.fetchall():
             print(f"    {row[0]}: {row[1]}")
         
-        print("\n  Patents by FTO Flag:")
-        cursor.execute("SELECT ftoFlag, COUNT(*) as count FROM Patent GROUP BY ftoFlag ORDER BY count DESC")
+        print("\n  Patents by Type:")
+        cursor.execute("SELECT patentType, COUNT(*) as count FROM Patent GROUP BY patentType ORDER BY count DESC")
+        for row in cursor.fetchall():
+            print(f"    {row[0]}: {row[1]}")
+        
+        print("\n  Patents by Country:")
+        cursor.execute("SELECT country, COUNT(*) as count FROM Patent GROUP BY country ORDER BY count DESC")
         for row in cursor.fetchall():
             print(f"    {row[0]}: {row[1]}")
     

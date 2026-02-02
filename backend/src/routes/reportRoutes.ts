@@ -32,18 +32,35 @@ router.get('/:jobId/report', async (req, res) => {
 
     const reportData = report.data ? JSON.parse(report.data) : null;
 
+    // Return NEW decision-driven format with legacy fallbacks
     res.json({
       reportId: report.id,
       queryText: job.queryText,
       summary: report.summary,
+      
+      // PRIMARY OUTPUT: Commercial Decisions
+      decisions: reportData?.decisions || [],
+      marketOverview: reportData?.marketOverview || { 
+        totalAddressableMarketUSD: 0, 
+        byIndication: [] 
+      },
+      strategySummary: reportData?.strategySummary || { 
+        license: [], 
+        generic: [], 
+        wait: [], 
+        drop: [] 
+      },
+      upcomingPatentExpiries: reportData?.upcomingPatentExpiries || [],
+      
+      recommendations: reportData?.recommendations || [],
+      pdfUrl: `/api/reports/${report.id}/pdf`,
+      createdAt: report.createdAt,
+      
+      // Legacy fields (for backward compatibility)
       confidence: report.confidence,
       opportunities: reportData?.opportunities || [],
       trialsSummary: reportData?.trialsSummary || { byMolecule: [] },
       patentSummary: reportData?.patentSummary || { byMolecule: [] },
-      recommendations: reportData?.recommendations || [],
-      pdfUrl: `/api/reports/${report.id}/pdf`,
-      createdAt: report.createdAt,
-      // Enhanced fields
       confidenceDecomposition: reportData?.confidenceDecomposition || null,
       marketInsights: reportData?.marketInsights || null,
       patentCliff: reportData?.patentCliff || null,

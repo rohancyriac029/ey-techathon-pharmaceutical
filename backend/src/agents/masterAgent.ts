@@ -1,15 +1,30 @@
 import { jobService } from '../services/jobService';
 import { cacheService } from '../services/cacheService';
 import { callGemini, extractJson } from '../services/geminiClient';
-import { runClinicalTrialsAgent } from './clinicalTrialsAgent';
-import { runPatentAgent } from './patentAgent';
-import { runSynthesisEngine } from './synthesisEngine';
+import { runMoleculeScopeAgent } from './moleculeScopeAgent';
+import { runPatentFTOAgent } from './patentFTOAgent';
+import { runClinicalMaturityAgent } from './clinicalMaturityAgent';
+import { runEpidemiologyMarketAgent } from './epidemiologyMarketAgent';
+import { runCommercialDecisionAgent } from './commercialDecisionAgent';
 import { generateReport } from './reportGenerator';
 import { ExecutionPlan, ExecutionPlanSchema } from '../types/query';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+/**
+ * Master Agent - Orchestrates the Decision-Driven Analysis Pipeline
+ * 
+ * Pipeline:
+ * 1. Parse query → ExecutionPlan
+ * 2. MoleculeScopeAgent → Select relevant molecules
+ * 3. Run in parallel:
+ *    - PatentFTOAgent → Country-specific FTO analysis
+ *    - ClinicalMaturityAgent → Regulatory readiness
+ *    - EpidemiologyMarketAgent → Market opportunity
+ * 4. CommercialDecisionAgent → LICENSE | GENERIC | WAIT | DROP
+ * 5. ReportGenerator → Board-ready output
+ */
 export async function runMasterAgent(queryText: string, jobId: string): Promise<void> {
   try {
     // Update job status to running
@@ -19,7 +34,7 @@ export async function runMasterAgent(queryText: string, jobId: string): Promise<
       agent: 'MasterAgent',
       status: 'running',
       timestamp: new Date().toISOString(),
-      detail: 'Starting analysis pipeline',
+      detail: 'Starting decision-driven analysis pipeline',
     });
 
     // Check cache first
@@ -34,7 +49,6 @@ export async function runMasterAgent(queryText: string, jobId: string): Promise<
         detail: 'Cache hit - returning cached result',
       });
 
-      // Link to cached report
       await jobService.updateJob(jobId, {
         status: 'completed',
         resultId: cachedResult.reportId,
@@ -58,7 +72,9 @@ export async function runMasterAgent(queryText: string, jobId: string): Promise<
       detail: 'Cache miss - running full analysis',
     });
 
-    // Parse query with Gemini to create execution plan
+    // ============================================
+    // STEP 1: Parse Query with AI
+    // ============================================
     await jobService.appendTraceEvent(jobId, {
       agent: 'MasterAgent',
       status: 'running',
@@ -66,27 +82,27 @@ export async function runMasterAgent(queryText: string, jobId: string): Promise<
       detail: 'Parsing query with AI',
     });
 
-    const planPrompt = `You are a pharmaceutical research query parser. Parse this natural language query and extract structured parameters.
+    const planPrompt = `You are a pharmaceutical BD query parser. Parse this query and extract structured parameters.
 
 Query: "${queryText}"
 
-Extract and return a JSON object with these fields:
-- condition: the disease or medical condition mentioned (e.g., "COPD", "respiratory disease", "cancer")
-- country: the target country/region mentioned (e.g., "India", "USA")
-- molecule: specific molecule name if mentioned
-- objectives: array of goals mentioned (e.g., ["low competition", "high patient burden"])
-- agentsToRun: always ["clinical", "patent"]
+Extract and return a JSON object with:
+- condition: disease/indication (e.g., "COPD", "Type 2 Diabetes", "NSCLC", "respiratory", "diabetes", "cancer")
+- country: target market (e.g., "India", "USA", "IN", "US")
+- molecule: specific molecule if mentioned (e.g., "Semaglutide", "Tiotropium")
+- objectives: business goals (e.g., ["generic opportunity", "licensing deal", "patent expiry"])
+- agentsToRun: always ["scope", "fto", "clinical", "market", "decision"]
 
-Return only valid JSON, no other text. Example:
+Return only valid JSON. Example:
 {
-  "condition": "respiratory disease",
+  "condition": "COPD",
   "country": "India",
-  "objectives": ["low competition", "high patient burden"],
-  "agentsToRun": ["clinical", "patent"]
+  "objectives": ["generic opportunity", "low competition"],
+  "agentsToRun": ["scope", "fto", "clinical", "market", "decision"]
 }`;
 
     let plan: ExecutionPlan = {
-      agentsToRun: ['clinical', 'patent'],
+      agentsToRun: ['scope', 'fto', 'clinical', 'market', 'decision'],
     };
 
     try {
@@ -99,15 +115,58 @@ Return only valid JSON, no other text. Example:
         plan = validated.data;
       }
     } catch (parseError) {
-      console.error('Failed to parse execution plan, using defaults');
-      // Extract basic info from query text manually
-      if (queryText.toLowerCase().includes('india')) plan.country = 'India';
-      if (queryText.toLowerCase().includes('usa') || queryText.toLowerCase().includes('united states')) plan.country = 'USA';
-      if (queryText.toLowerCase().includes('respiratory') || queryText.toLowerCase().includes('copd') || queryText.toLowerCase().includes('asthma')) {
-        plan.condition = 'respiratory';
+      console.error('Failed to parse execution plan, using manual extraction');
+      // Manual extraction fallback
+      const lowerQuery = queryText.toLowerCase();
+      
+      if (lowerQuery.includes('india') || lowerQuery.includes(' in ')) plan.country = 'India';
+      if (lowerQuery.includes('usa') || lowerQuery.includes('united states') || lowerQuery.includes(' us ')) plan.country = 'USA';
+      
+      // COPD / Respiratory
+      if (lowerQuery.includes('respiratory') || lowerQuery.includes('copd') || 
+          lowerQuery.includes('lung disease') || lowerQuery.includes('pulmonary') ||
+          lowerQuery.includes('chronic obstructive')) {
+        plan.condition = 'COPD';
       }
-      if (queryText.toLowerCase().includes('cancer') || queryText.toLowerCase().includes('oncology')) {
-        plan.condition = 'cancer';
+      // Type 2 Diabetes
+      else if (lowerQuery.includes('diabetes') || lowerQuery.includes('t2d') ||
+               lowerQuery.includes('diabetic') || lowerQuery.includes('type 2')) {
+        plan.condition = 'Type 2 Diabetes';
+      }
+      // NSCLC / Oncology
+      else if (lowerQuery.includes('cancer') || lowerQuery.includes('oncology') || 
+               lowerQuery.includes('nsclc') || lowerQuery.includes('tumor')) {
+        plan.condition = 'NSCLC';
+      }
+      // Rheumatoid Arthritis
+      else if (lowerQuery.includes('arthritis') || lowerQuery.includes('rheumatoid') ||
+               lowerQuery.includes('autoimmune')) {
+        plan.condition = 'Rheumatoid Arthritis';
+      }
+      // Cardiovascular
+      else if (lowerQuery.includes('cardiovascular') || lowerQuery.includes('heart') ||
+               lowerQuery.includes('cholesterol') || lowerQuery.includes('statin') ||
+               lowerQuery.includes('lipid')) {
+        plan.condition = 'Cardiovascular';
+      }
+      // Hypertension
+      else if (lowerQuery.includes('hypertension') || lowerQuery.includes('blood pressure') ||
+               lowerQuery.includes('high bp')) {
+        plan.condition = 'Hypertension';
+      }
+      
+      // Check for specific molecules
+      const molecules = ['semaglutide', 'sitagliptin', 'empagliflozin', 'tiotropium', 
+                        'roflumilast', 'osimertinib', 'pembrolizumab', 'umeclidinium',
+                        'indacaterol', 'metformin', 'erlotinib', 'gefitinib',
+                        'adalimumab', 'etanercept', 'tofacitinib', 'baricitinib',
+                        'atorvastatin', 'rosuvastatin', 'ezetimibe', 'clopidogrel',
+                        'lisinopril', 'amlodipine', 'losartan', 'valsartan'];
+      for (const mol of molecules) {
+        if (lowerQuery.includes(mol)) {
+          plan.molecule = mol.charAt(0).toUpperCase() + mol.slice(1);
+          break;
+        }
       }
     }
 
@@ -115,35 +174,49 @@ Return only valid JSON, no other text. Example:
       agent: 'MasterAgent',
       status: 'running',
       timestamp: new Date().toISOString(),
-      detail: `Execution plan: condition=${plan.condition || 'any'}, country=${plan.country || 'any'}`,
+      detail: `Plan: ${plan.condition || 'all indications'}, ${plan.country || 'IN+US'}, molecule=${plan.molecule || 'all'}`,
     });
 
-    // Run agents in parallel
-    const [clinicalResult, patentResult] = await Promise.all([
-      runClinicalTrialsAgent(plan, jobId),
-      runPatentAgent(plan, jobId),
+    // ============================================
+    // STEP 2: Select Molecules
+    // ============================================
+    const scopeResult = await runMoleculeScopeAgent(plan, jobId);
+
+    if (scopeResult.selectedMolecules.length === 0) {
+      throw new Error('No molecules found matching query criteria');
+    }
+
+    // ============================================
+    // STEP 3: Run Analysis Agents in Parallel
+    // ============================================
+    const [ftoResult, clinicalResult, marketResult] = await Promise.all([
+      runPatentFTOAgent(scopeResult.selectedMolecules, jobId),
+      runClinicalMaturityAgent(scopeResult.selectedMolecules, jobId),
+      runEpidemiologyMarketAgent(scopeResult.selectedMolecules, jobId),
     ]);
 
-    // Run synthesis engine
-    const synthesisResult = await runSynthesisEngine(
-      clinicalResult,
-      patentResult,
-      queryText,
+    // ============================================
+    // STEP 4: Commercial Decision Making
+    // ============================================
+    const decisionResult = await runCommercialDecisionAgent(
+      ftoResult.molecules,
+      clinicalResult.molecules,
+      marketResult.molecules,
       jobId
     );
 
-    // Generate report with enhanced data
+    // ============================================
+    // STEP 5: Generate Board-Ready Report
+    // ============================================
     const reportId = await generateReport({
       jobId,
       queryText,
-      opportunities: synthesisResult.opportunities,
+      decisions: decisionResult.decisions,
+      decisionSummary: decisionResult.summary,
+      ftoResult,
       clinicalResult,
-      patentResult,
-      confidence: synthesisResult.overallConfidence,
-      // Enhanced fields
-      confidenceDecomposition: synthesisResult.confidenceDecomposition,
-      marketInsights: synthesisResult.marketInsights,
-      patentCliff: patentResult.patentCliff,
+      marketResult,
+      filterCriteria: scopeResult.filterCriteria,
     });
 
     // Cache the result
@@ -159,7 +232,10 @@ Return only valid JSON, no other text. Example:
       agent: 'MasterAgent',
       status: 'completed',
       timestamp: new Date().toISOString(),
-      detail: 'Analysis pipeline complete',
+      detail: `Analysis complete: ${decisionResult.summary.genericOpportunities} GENERIC, ` +
+        `${decisionResult.summary.licenseOpportunities} LICENSE, ` +
+        `${decisionResult.summary.waitOpportunities} WAIT, ` +
+        `${decisionResult.summary.dropRecommendations} DROP`,
     });
 
   } catch (error) {

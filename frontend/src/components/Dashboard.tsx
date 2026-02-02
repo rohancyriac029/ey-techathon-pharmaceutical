@@ -1,217 +1,237 @@
 import React, { useState } from 'react';
-import type { ReportResponse, Opportunity, ScoreBreakdown } from '../api/client';
+import type { ReportResponse, MoleculeDecision, CountryRecommendation, CommercialStrategy } from '../api/client';
 
 interface DashboardProps {
   report: ReportResponse;
   onSuggestedQuery?: (query: string) => void;
 }
 
-const getFtoColor = (flag: string) => {
-  switch (flag) {
+// Strategy color mapping
+const getStrategyColor = (strategy: CommercialStrategy) => {
+  switch (strategy) {
+    case 'LICENSE':
+      return 'bg-purple-100 text-purple-800 border-purple-300';
+    case 'GENERIC':
+      return 'bg-green-100 text-green-800 border-green-300';
+    case 'WAIT':
+      return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+    case 'DROP':
+      return 'bg-red-100 text-red-800 border-red-300';
+    default:
+      return 'bg-gray-100 text-gray-800 border-gray-300';
+  }
+};
+
+const getRiskColor = (risk: string) => {
+  switch (risk) {
     case 'LOW':
-      return 'text-green-600 bg-green-50';
+      return 'text-green-600';
     case 'MEDIUM':
-      return 'text-yellow-600 bg-yellow-50';
+      return 'text-yellow-600';
     case 'HIGH':
-      return 'text-red-600 bg-red-50';
+      return 'text-red-600';
     default:
-      return 'text-gray-600 bg-gray-50';
+      return 'text-gray-600';
   }
 };
 
-const getLicensingColor = (signal: string) => {
-  switch (signal) {
-    case 'STRONG':
-      return 'text-green-600 bg-green-50';
-    case 'MODERATE':
-      return 'text-blue-600 bg-blue-50';
-    case 'WEAK':
-      return 'text-yellow-600 bg-yellow-50';
+const getGoNoGoColor = (goNoGo: string) => {
+  switch (goNoGo) {
+    case 'GO':
+      return 'bg-green-500 text-white';
+    case 'NO-GO':
+      return 'bg-red-500 text-white';
+    case 'CONDITIONAL':
+      return 'bg-yellow-500 text-white';
     default:
-      return 'text-gray-600 bg-gray-50';
+      return 'bg-gray-500 text-white';
   }
 };
 
-const getCompetitionColor = (intensity: string) => {
-  switch (intensity) {
-    case 'UNDERCROWDED':
-      return 'text-green-600 bg-green-50';
-    case 'COMPETITIVE':
-      return 'text-yellow-600 bg-yellow-50';
-    case 'SATURATED':
-      return 'text-red-600 bg-red-50';
-    default:
-      return 'text-gray-600 bg-gray-50';
-  }
+const formatCurrency = (value: number): string => {
+  if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
+  if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
+  if (value >= 1e3) return `$${(value / 1e3).toFixed(1)}K`;
+  return `$${value.toFixed(0)}`;
 };
 
-// Score Breakdown Component
-const ScoreBreakdownPanel: React.FC<{ breakdown: ScoreBreakdown }> = ({ breakdown }) => {
-  const items = [
-    { label: 'Base Score', value: breakdown.baseScore, color: 'bg-gray-400' },
-    { label: 'Trial Activity', value: breakdown.trialScore, color: 'bg-blue-500' },
-    { label: 'FTO Adjustment', value: breakdown.ftoAdjustment, color: breakdown.ftoAdjustment >= 0 ? 'bg-green-500' : 'bg-red-500' },
-    { label: 'Phase Bonus', value: breakdown.phaseBonus, color: 'bg-purple-500' },
-    { label: 'Competition', value: -breakdown.competitionPenalty, color: 'bg-orange-500' },
-    { label: 'Licensing Bonus', value: breakdown.licensingBonus, color: 'bg-teal-500' },
-  ];
+// Country Recommendation Card
+const CountryCard: React.FC<{ rec: CountryRecommendation }> = ({ rec }) => (
+  <div className="border rounded-lg p-4 bg-gray-50">
+    <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center gap-2">
+        <span className="text-2xl">{rec.country === 'IN' ? '🇮🇳' : '🇺🇸'}</span>
+        <span className="font-semibold text-gray-800">{rec.country === 'IN' ? 'India' : 'United States'}</span>
+      </div>
+      <span className={`px-3 py-1 rounded-full text-xs font-bold ${getGoNoGoColor(rec.goNoGo)}`}>
+        {rec.goNoGo}
+      </span>
+    </div>
+    
+    <div className={`inline-block px-3 py-1 rounded-full text-sm font-semibold border mb-3 ${getStrategyColor(rec.strategy)}`}>
+      {rec.strategy}
+    </div>
+    
+    <div className="grid grid-cols-2 gap-3 text-sm mb-3">
+      <div>
+        <div className="text-gray-500">Time to Market</div>
+        <div className="font-semibold">{rec.timeToMarketYears} years</div>
+      </div>
+      <div>
+        <div className="text-gray-500">Est. Revenue</div>
+        <div className="font-semibold">{formatCurrency(rec.estimatedRevenueUSD)}</div>
+      </div>
+      <div>
+        <div className="text-gray-500">Risk</div>
+        <div className={`font-semibold ${getRiskColor(rec.commercialRisk)}`}>{rec.commercialRisk}</div>
+      </div>
+    </div>
+    
+    <p className="text-sm text-gray-600">{rec.rationale}</p>
+    
+    {rec.conditions && rec.conditions.length > 0 && (
+      <div className="mt-3 pt-3 border-t">
+        <div className="text-xs text-gray-500 mb-1">Conditions:</div>
+        <ul className="text-xs text-gray-600 space-y-1">
+          {rec.conditions.map((c, i) => (
+            <li key={i}>• {c}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+);
+
+// Molecule Decision Card
+const MoleculeDecisionCard: React.FC<{ decision: MoleculeDecision }> = ({ decision }) => {
+  const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="bg-gray-50 rounded-lg p-4 mt-2">
-      <div className="text-sm font-semibold text-gray-700 mb-3">Score Breakdown</div>
-      <div className="space-y-2">
-        {items.map((item) => (
-          <div key={item.label} className="flex items-center justify-between text-xs">
-            <span className="text-gray-600">{item.label}</span>
-            <div className="flex items-center gap-2">
-              <div className="w-20 bg-gray-200 rounded-full h-1.5">
-                <div
-                  className={`${item.color} h-1.5 rounded-full`}
-                  style={{ width: `${Math.abs(item.value) * 100}%` }}
-                />
-              </div>
-              <span className={`font-mono ${item.value >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                {item.value >= 0 ? '+' : ''}{(item.value * 100).toFixed(0)}%
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div 
+        className="p-6 cursor-pointer hover:bg-gray-50 transition-colors"
+        onClick={() => setExpanded(!expanded)}
+      >
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-xl font-bold text-gray-400">#{decision.priorityRank}</span>
+              <h3 className="text-xl font-bold text-gray-900">{decision.molecule}</h3>
+              <span className={`px-3 py-1 rounded-full text-sm font-bold border ${getStrategyColor(decision.overallStrategy)}`}>
+                {decision.overallStrategy}
               </span>
             </div>
+            {decision.brandName && (
+              <p className="text-sm text-gray-500 mb-1">Brand: {decision.brandName}</p>
+            )}
+            <div className="flex flex-wrap gap-2 text-sm text-gray-600">
+              <span className="bg-blue-50 text-blue-700 px-2 py-0.5 rounded">{decision.indication}</span>
+              <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{decision.innovator}</span>
+              <span className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded">{decision.modality}</span>
+            </div>
           </div>
-        ))}
-        <div className="border-t pt-2 flex justify-between font-semibold">
-          <span>Total</span>
-          <span className="text-blue-600">{(breakdown.total * 100).toFixed(0)}%</span>
+          <div className="flex items-center gap-4">
+            <div className={`text-center ${getRiskColor(decision.overallRisk)}`}>
+              <div className="text-xs text-gray-500">Risk</div>
+              <div className="font-bold">{decision.overallRisk}</div>
+            </div>
+            <span className="text-blue-500 text-xl">{expanded ? '▲' : '▼'}</span>
+          </div>
+        </div>
+        
+        {/* Summary pills */}
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="bg-purple-50 rounded-lg p-3">
+            <div className="text-xs text-purple-600 font-semibold mb-1">📋 FTO Summary</div>
+            <p className="text-sm text-gray-700">{decision.ftoSummary}</p>
+          </div>
+          <div className="bg-blue-50 rounded-lg p-3">
+            <div className="text-xs text-blue-600 font-semibold mb-1">🧪 Clinical Summary</div>
+            <p className="text-sm text-gray-700">{decision.clinicalSummary}</p>
+          </div>
+          <div className="bg-green-50 rounded-lg p-3">
+            <div className="text-xs text-green-600 font-semibold mb-1">💰 Market Summary</div>
+            <p className="text-sm text-gray-700">{decision.marketSummary}</p>
+          </div>
         </div>
       </div>
+      
+      {/* Expanded: Country Recommendations */}
+      {expanded && (
+        <div className="px-6 pb-6 border-t bg-gray-50">
+          <h4 className="text-lg font-semibold text-gray-800 mt-4 mb-4">Country Recommendations</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {decision.recommendations.map((rec) => (
+              <CountryCard key={rec.country} rec={rec} />
+            ))}
+          </div>
+          
+          {/* Entry timelines */}
+          {(decision.earliestEntryIN || decision.earliestEntryUS) && (
+            <div className="mt-4 pt-4 border-t flex gap-6 text-sm">
+              {decision.earliestEntryIN && (
+                <div>
+                  <span className="text-gray-500">🇮🇳 Earliest Entry: </span>
+                  <span className="font-semibold">{decision.earliestEntryIN}</span>
+                </div>
+              )}
+              {decision.earliestEntryUS && (
+                <div>
+                  <span className="text-gray-500">🇺🇸 Earliest Entry: </span>
+                  <span className="font-semibold">{decision.earliestEntryUS}</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
-// Expandable Opportunity Row
-const OpportunityRow: React.FC<{ opp: Opportunity }> = ({ opp }) => {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <>
-      <tr className="hover:bg-gray-50 cursor-pointer" onClick={() => setExpanded(!expanded)}>
-        <td className="px-4 py-3 text-sm font-medium text-gray-900">#{opp.rank}</td>
-        <td className="px-4 py-3">
-          <div className="text-sm font-semibold text-blue-600">{opp.molecule}</div>
-          {opp.licensingAnalysis && (
-            <span className={`text-xs px-2 py-0.5 rounded-full ${getLicensingColor(opp.licensingAnalysis.signal)}`}>
-              {opp.licensingAnalysis.signal} Licensing
-            </span>
-          )}
-        </td>
-        <td className="px-4 py-3 text-sm text-gray-700">
-          <div className="flex items-center gap-2">
-            <div className="w-24 bg-gray-200 rounded-full h-2">
-              <div
-                className="bg-blue-600 h-2 rounded-full"
-                style={{ width: `${opp.confidence * 100}%` }}
-              />
-            </div>
-            <span>{(opp.confidence * 100).toFixed(0)}%</span>
-          </div>
-        </td>
-        <td className="px-4 py-3">
-          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getFtoColor(opp.ftoFlag)}`}>
-            {opp.ftoFlag}
-          </span>
-        </td>
-        <td className="px-4 py-3">
-          {opp.competitiveAnalysis && (
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getCompetitionColor(opp.competitiveAnalysis.intensity)}`}>
-              {opp.competitiveAnalysis.intensity}
-            </span>
-          )}
-        </td>
-        <td className="px-4 py-3 text-sm text-gray-600">
-          {opp.rationale}
-          <span className="ml-2 text-blue-500">{expanded ? '▲' : '▼'}</span>
-        </td>
-      </tr>
-      {expanded && opp.scoreBreakdown && (
-        <tr>
-          <td colSpan={6} className="px-4 py-2 bg-gray-50">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <ScoreBreakdownPanel breakdown={opp.scoreBreakdown} />
-              
-              {opp.licensingAnalysis && opp.licensingAnalysis.reasons.length > 0 && (
-                <div className="bg-blue-50 rounded-lg p-4">
-                  <div className="text-sm font-semibold text-blue-700 mb-2">Licensing Signals</div>
-                  <ul className="text-xs text-blue-600 space-y-1">
-                    {opp.licensingAnalysis.reasons.map((reason, i) => (
-                      <li key={i}>• {reason}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              {opp.geoReadiness && (
-                <div className="bg-purple-50 rounded-lg p-4">
-                  <div className="text-sm font-semibold text-purple-700 mb-2">Geographic Readiness</div>
-                  <div className="space-y-1">
-                    {opp.geoReadiness.filter(g => g.readinessScore > 0).slice(0, 4).map((geo) => (
-                      <div key={geo.country} className="flex items-center justify-between text-xs">
-                        <span>{geo.country}</span>
-                        <div className="flex items-center gap-1">
-                          <div className="w-16 bg-gray-200 rounded-full h-1.5">
-                            <div
-                              className="bg-purple-500 h-1.5 rounded-full"
-                              style={{ width: `${geo.readinessScore * 100}%` }}
-                            />
-                          </div>
-                          <span className="text-purple-600">{(geo.readinessScore * 100).toFixed(0)}%</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </td>
-        </tr>
-      )}
-    </>
-  );
-};
-
 export const Dashboard: React.FC<DashboardProps> = ({ report, onSuggestedQuery }) => {
+  const hasDecisions = report.decisions && report.decisions.length > 0;
+  
   return (
     <div className="space-y-6">
-      {/* Header Card with Confidence Decomposition */}
+      {/* Header Card */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-6 text-white">
         <h2 className="text-2xl font-bold mb-2">Analysis Complete</h2>
         <p className="text-blue-100 mb-4">{report.queryText}</p>
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="bg-white/20 rounded-lg px-4 py-2">
-            <div className="text-sm opacity-90">Overall Confidence</div>
-            <div className="text-3xl font-bold">{(report.confidence * 100).toFixed(0)}%</div>
-            {report.confidenceDecomposition && (
-              <div className="text-xs opacity-75 mt-1">
-                Data: {(report.confidenceDecomposition.dataConfidence * 100).toFixed(0)}% | 
-                AI: {(report.confidenceDecomposition.aiConfidence * 100).toFixed(0)}%
+        
+        {/* Strategy Summary Cards */}
+        {report.strategySummary && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4">
+            <div className="bg-white/20 rounded-lg px-4 py-3">
+              <div className="text-sm opacity-90">License</div>
+              <div className="text-3xl font-bold">{report.strategySummary.license?.length || 0}</div>
+              <div className="text-xs opacity-75 truncate">
+                {report.strategySummary.license?.slice(0, 2).join(', ')}
               </div>
-            )}
+            </div>
+            <div className="bg-white/20 rounded-lg px-4 py-3">
+              <div className="text-sm opacity-90">Generic</div>
+              <div className="text-3xl font-bold">{report.strategySummary.generic?.length || 0}</div>
+              <div className="text-xs opacity-75 truncate">
+                {report.strategySummary.generic?.slice(0, 2).join(', ')}
+              </div>
+            </div>
+            <div className="bg-white/20 rounded-lg px-4 py-3">
+              <div className="text-sm opacity-90">Wait</div>
+              <div className="text-3xl font-bold">{report.strategySummary.wait?.length || 0}</div>
+              <div className="text-xs opacity-75 truncate">
+                {report.strategySummary.wait?.slice(0, 2).join(', ')}
+              </div>
+            </div>
+            <div className="bg-white/20 rounded-lg px-4 py-3">
+              <div className="text-sm opacity-90">Drop</div>
+              <div className="text-3xl font-bold">{report.strategySummary.drop?.length || 0}</div>
+              <div className="text-xs opacity-75 truncate">
+                {report.strategySummary.drop?.slice(0, 2).join(', ')}
+              </div>
+            </div>
           </div>
-          <div className="bg-white/20 rounded-lg px-4 py-2">
-            <div className="text-sm opacity-90">Opportunities</div>
-            <div className="text-3xl font-bold">{report.opportunities.length}</div>
-          </div>
-          {report.marketInsights && (
-            <>
-              <div className="bg-white/20 rounded-lg px-4 py-2">
-                <div className="text-sm opacity-90">Licensing Candidates</div>
-                <div className="text-3xl font-bold">{report.marketInsights.strongLicensingCandidates}</div>
-                <div className="text-xs opacity-75">Strong signal</div>
-              </div>
-              <div className="bg-white/20 rounded-lg px-4 py-2">
-                <div className="text-sm opacity-90">Low FTO Risk</div>
-                <div className="text-3xl font-bold">{report.marketInsights.lowFtoCount}</div>
-                <div className="text-xs opacity-75">of {report.marketInsights.totalMoleculesAnalyzed} analyzed</div>
-              </div>
-            </>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Executive Summary */}
@@ -220,165 +240,99 @@ export const Dashboard: React.FC<DashboardProps> = ({ report, onSuggestedQuery }
         <p className="text-gray-700 leading-relaxed">{report.summary}</p>
       </div>
 
-      {/* Market Insights Bar */}
-      {report.marketInsights && (
+      {/* Market Overview */}
+      {report.marketOverview && report.marketOverview.totalAddressableMarketUSD > 0 && (
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">Market Overview</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className="text-2xl font-bold text-gray-800">{report.marketInsights.totalMoleculesAnalyzed}</div>
-              <div className="text-sm text-gray-600">Molecules Analyzed</div>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-bold text-green-600">{report.marketInsights.lowFtoCount}</div>
-              <div className="text-sm text-gray-600">Low FTO Risk</div>
-            </div>
-            <div className="text-center p-4 bg-yellow-50 rounded-lg">
-              <div className="text-2xl font-bold text-yellow-600">{report.marketInsights.mediumFtoCount}</div>
-              <div className="text-sm text-gray-600">Medium FTO Risk</div>
-            </div>
-            <div className="text-center p-4 bg-red-50 rounded-lg">
-              <div className="text-2xl font-bold text-red-600">{report.marketInsights.highFtoCount}</div>
-              <div className="text-sm text-gray-600">High FTO Risk</div>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">💰 Market Overview</h3>
+          <div className="text-center mb-6">
+            <div className="text-sm text-gray-500">Total Addressable Market</div>
+            <div className="text-4xl font-bold text-green-600">
+              {formatCurrency(report.marketOverview.totalAddressableMarketUSD)}
             </div>
           </div>
-          <div className="mt-4 flex items-center justify-center gap-8">
-            <div className="text-center">
-              <div className="text-lg font-semibold text-gray-700">{report.marketInsights.avgCompetitionIndex}</div>
-              <div className="text-xs text-gray-500">Avg Competition Index</div>
-            </div>
-            <div className="text-center">
-              <div className="text-lg font-semibold text-green-600">{report.marketInsights.strongLicensingCandidates}</div>
-              <div className="text-xs text-gray-500">Strong Licensing Candidates</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Patent Cliff Radar */}
-      {report.patentCliff && (
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">📅 Patent Cliff Radar</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="border-l-4 border-green-500 pl-4">
-              <div className="text-sm font-semibold text-gray-700">Already Expired</div>
-              <div className="text-2xl font-bold text-green-600">{report.patentCliff.alreadyExpired.length}</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {report.patentCliff.alreadyExpired.slice(0, 2).map(p => p.molecule).join(', ')}
-                {report.patentCliff.alreadyExpired.length > 2 && '...'}
-              </div>
-            </div>
-            <div className="border-l-4 border-blue-500 pl-4">
-              <div className="text-sm font-semibold text-gray-700">Expiring in 1 Year</div>
-              <div className="text-2xl font-bold text-blue-600">{report.patentCliff.expiring1Year.length}</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {report.patentCliff.expiring1Year.slice(0, 2).map(p => p.molecule).join(', ')}
-                {report.patentCliff.expiring1Year.length > 2 && '...'}
-              </div>
-            </div>
-            <div className="border-l-4 border-yellow-500 pl-4">
-              <div className="text-sm font-semibold text-gray-700">Expiring in 3 Years</div>
-              <div className="text-2xl font-bold text-yellow-600">{report.patentCliff.expiring3Years.length}</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {report.patentCliff.expiring3Years.slice(0, 2).map(p => p.molecule).join(', ')}
-                {report.patentCliff.expiring3Years.length > 2 && '...'}
-              </div>
-            </div>
-            <div className="border-l-4 border-orange-500 pl-4">
-              <div className="text-sm font-semibold text-gray-700">Expiring in 5 Years</div>
-              <div className="text-2xl font-bold text-orange-600">{report.patentCliff.expiring5Years.length}</div>
-              <div className="text-xs text-gray-500 mt-1">
-                {report.patentCliff.expiring5Years.slice(0, 2).map(p => p.molecule).join(', ')}
-                {report.patentCliff.expiring5Years.length > 2 && '...'}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Top Opportunities with Explainability */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">Top Opportunities</h3>
-        <p className="text-xs text-gray-500 mb-4">Click any row to see detailed score breakdown</p>
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Rank</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Molecule</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Confidence</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">FTO Risk</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Competition</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Rationale</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {report.opportunities.map((opp) => (
-                <OpportunityRow key={opp.molecule} opp={opp} />
+          
+          {report.marketOverview.byIndication && report.marketOverview.byIndication.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {report.marketOverview.byIndication.map((ind) => (
+                <div key={ind.indication} className="border rounded-lg p-4 text-center">
+                  <div className="font-semibold text-gray-800 mb-2">{ind.indication}</div>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <div className="text-gray-500">🇮🇳 India</div>
+                      <div className="font-semibold">{formatCurrency(ind.marketSizeIN)}</div>
+                    </div>
+                    <div>
+                      <div className="text-gray-500">🇺🇸 US</div>
+                      <div className="font-semibold">{formatCurrency(ind.marketSizeUS)}</div>
+                    </div>
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Clinical Trials Summary */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">Clinical Trials Overview</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {report.trialsSummary.byMolecule.slice(0, 6).map((mol) => (
-            <div key={mol.molecule} className="border border-gray-200 rounded-lg p-4">
-              <div className="font-semibold text-gray-800 mb-2">{mol.molecule}</div>
-              <div className="text-sm text-gray-600 mb-2">{mol.trialCount} trial(s)</div>
-              <div className="text-xs text-gray-500">
-                Phases: {Object.entries(mol.phases).map(([phase, count]) => `${phase}: ${count}`).join(', ')}
-              </div>
-              {mol.countries && mol.countries.length > 0 && (
-                <div className="text-xs text-gray-400 mt-1">
-                  Countries: {mol.countries.join(', ')}
-                </div>
-              )}
             </div>
+          )}
+        </div>
+      )}
+
+      {/* Upcoming Patent Expiries */}
+      {report.upcomingPatentExpiries && report.upcomingPatentExpiries.length > 0 && (
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">📅 Upcoming Patent Expiries</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Molecule</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Country</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Expiry Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Time to Expiry</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {report.upcomingPatentExpiries.map((exp, idx) => (
+                  <tr key={idx} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-semibold text-gray-900">{exp.molecule}</td>
+                    <td className="px-4 py-3">
+                      <span className="text-lg">{exp.country === 'IN' ? '🇮🇳' : '🇺🇸'}</span>
+                      <span className="ml-2">{exp.country}</span>
+                    </td>
+                    <td className="px-4 py-3 text-gray-700">{exp.expiryDate}</td>
+                    <td className="px-4 py-3">
+                      <span className={`font-semibold ${exp.yearsToExpiry <= 1 ? 'text-green-600' : exp.yearsToExpiry <= 3 ? 'text-yellow-600' : 'text-gray-600'}`}>
+                        {exp.yearsToExpiry <= 0 ? 'Expired' : `${exp.yearsToExpiry.toFixed(1)} years`}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Molecule Decisions */}
+      {hasDecisions && (
+        <div className="space-y-4">
+          <h3 className="text-xl font-bold text-gray-800">🎯 Molecule Decisions</h3>
+          <p className="text-sm text-gray-500">Click any card to see detailed country recommendations</p>
+          {report.decisions.map((decision) => (
+            <MoleculeDecisionCard key={decision.molecule} decision={decision} />
           ))}
         </div>
-      </div>
-
-      {/* Patent Landscape */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">Patent Landscape</h3>
-        <p className="text-xs text-gray-500 mb-3">FTO risk is based on the latest (blocking) patent expiry date</p>
-        <div className="space-y-3">
-          {report.patentSummary.byMolecule.slice(0, 5).map((mol) => (
-            <div key={mol.molecule} className="flex items-center justify-between border-b border-gray-100 pb-3">
-              <div>
-                <div className="font-semibold text-gray-800">{mol.molecule}</div>
-                <div className="text-sm text-gray-600">
-                  Latest Expiry: {mol.latestExpiry || mol.earliestExpiry} | Jurisdictions: {mol.jurisdictions.join(', ')}
-                  {mol.yearsToExpiry !== undefined && (
-                    <span className="ml-2 text-xs text-gray-400">
-                      ({mol.yearsToExpiry > 0 ? `${mol.yearsToExpiry.toFixed(1)} years left` : 'Expired'})
-                    </span>
-                  )}
-                </div>
-              </div>
-              <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getFtoColor(mol.ftoFlag)}`}>
-                {mol.ftoFlag}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Recommendations */}
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-4">Recommended Next Steps</h3>
-        <ol className="list-decimal list-inside space-y-2">
-          {report.recommendations.map((rec, index) => (
-            <li key={index} className="text-gray-700">
-              {rec}
-            </li>
-          ))}
-        </ol>
-      </div>
+      {report.recommendations && report.recommendations.length > 0 && (
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">✅ Recommended Next Steps</h3>
+          <ol className="list-decimal list-inside space-y-2">
+            {report.recommendations.map((rec, index) => (
+              <li key={index} className="text-gray-700">
+                {rec}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
 
       {/* Suggested Follow-up Queries */}
       {report.suggestedQueries && report.suggestedQueries.length > 0 && onSuggestedQuery && (

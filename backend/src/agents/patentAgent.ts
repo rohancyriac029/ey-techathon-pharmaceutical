@@ -20,20 +20,17 @@ export async function runPatentAgent(
     const filters: any = {};
     if (plan.molecule) filters.molecule = plan.molecule;
     
-    // Map country to jurisdiction
+    // Map country name to country code (new schema uses 'country' not 'jurisdiction')
     if (plan.country) {
-      const countryToJurisdiction: Record<string, string> = {
+      const countryToCode: Record<string, string> = {
         'India': 'IN',
         'USA': 'US',
         'United States': 'US',
-        'Europe': 'EP',
-        'China': 'CN',
-        'Japan': 'JP',
-        'UK': 'GB',
-        'Germany': 'DE',
+        'US': 'US',
+        'IN': 'IN',
       };
-      const jurisdiction = countryToJurisdiction[plan.country];
-      if (jurisdiction) filters.jurisdiction = jurisdiction;
+      const countryCode = countryToCode[plan.country];
+      if (countryCode) filters.country = countryCode;
     }
 
     // Query database
@@ -73,9 +70,14 @@ export async function runPatentAgent(
       const expiryDateObj = new Date(patent.expiryDate);
       const expiryDateStr = expiryDateObj.toISOString().split('T')[0];
       
+      // Use 'country' field (new schema) instead of 'jurisdiction'
+      const jurisdiction = patent.country;
+      // Use 'patentNumber' as citation (new schema doesn't have citations)
+      const citation = patent.patentNumber;
+      
       if (existing) {
-        if (!existing.jurisdictions.includes(patent.jurisdiction)) {
-          existing.jurisdictions.push(patent.jurisdiction);
+        if (!existing.jurisdictions.includes(jurisdiction)) {
+          existing.jurisdictions.push(jurisdiction);
         }
         // Update to earliest expiry (for display)
         if (expiryDateStr < existing.earliestExpiry) {
@@ -85,16 +87,16 @@ export async function runPatentAgent(
         if (expiryDateObj > existing.latestExpiry) {
           existing.latestExpiry = expiryDateObj;
         }
-        if (!existing.citations.includes(patent.citations)) {
-          existing.citations.push(patent.citations);
+        if (!existing.citations.includes(citation)) {
+          existing.citations.push(citation);
         }
       } else {
         moleculeMap.set(patent.molecule, {
           molecule: patent.molecule,
-          jurisdictions: [patent.jurisdiction],
+          jurisdictions: [jurisdiction],
           earliestExpiry: expiryDateStr,
           latestExpiry: expiryDateObj,
-          citations: [patent.citations],
+          citations: [citation],
         });
       }
     }

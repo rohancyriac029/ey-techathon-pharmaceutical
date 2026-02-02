@@ -21,7 +21,7 @@ class PdfService {
       doc.pipe(stream);
 
       // Title
-      doc.fontSize(24).fillColor('#1a365d').text('Pharmaceutical Intelligence Report', { align: 'center' });
+      doc.fontSize(24).fillColor('#1a365d').text('Pharmaceutical BD Intelligence Report', { align: 'center' });
       doc.moveDown();
 
       // Query
@@ -29,56 +29,88 @@ class PdfService {
       doc.fontSize(11).fillColor('#2d3748').text(payload.queryText);
       doc.moveDown();
 
-      // Confidence Score
-      doc.fontSize(14).fillColor('#1a365d').text(`Overall Confidence: ${(payload.confidence * 100).toFixed(1)}%`);
-      doc.moveDown();
-
       // Executive Summary
       doc.fontSize(14).fillColor('#1a365d').text('Executive Summary', { underline: true });
       doc.fontSize(11).fillColor('#2d3748').text(payload.summary);
       doc.moveDown(2);
 
-      // Opportunities Table
-      doc.fontSize(14).fillColor('#1a365d').text('Top Opportunities', { underline: true });
+      // Strategy Summary
+      doc.fontSize(14).fillColor('#1a365d').text('Commercial Strategy Overview', { underline: true });
       doc.moveDown(0.5);
 
-      payload.opportunities.forEach((opp, index) => {
-        doc.fontSize(12).fillColor('#2b6cb0').text(`${index + 1}. ${opp.molecule}`);
-        doc.fontSize(10).fillColor('#4a5568')
-          .text(`   Rank: ${opp.rank} | Confidence: ${(opp.confidence * 100).toFixed(0)}% | FTO Risk: ${opp.ftoFlag}`);
-        doc.fontSize(10).fillColor('#718096').text(`   ${opp.rationale}`);
+      if (payload.strategySummary) {
+        if (payload.strategySummary.generic.length > 0) {
+          doc.fontSize(11).fillColor('#38a169').text(`✓ GENERIC Opportunities: ${payload.strategySummary.generic.join(', ')}`);
+        }
+        if (payload.strategySummary.license.length > 0) {
+          doc.fontSize(11).fillColor('#3182ce').text(`✓ LICENSE Opportunities: ${payload.strategySummary.license.join(', ')}`);
+        }
+        if (payload.strategySummary.wait.length > 0) {
+          doc.fontSize(11).fillColor('#d69e2e').text(`○ WAIT (Monitor): ${payload.strategySummary.wait.join(', ')}`);
+        }
+        if (payload.strategySummary.drop.length > 0) {
+          doc.fontSize(11).fillColor('#e53e3e').text(`✗ DROP (Not Recommended): ${payload.strategySummary.drop.join(', ')}`);
+        }
+      }
+      doc.moveDown(2);
+
+      // Market Overview
+      if (payload.marketOverview) {
+        doc.fontSize(14).fillColor('#1a365d').text('Market Overview', { underline: true });
         doc.moveDown(0.5);
-      });
+        doc.fontSize(11).fillColor('#2d3748')
+          .text(`Total Addressable Market: $${(payload.marketOverview.totalAddressableMarketUSD / 1_000_000_000).toFixed(1)}B`);
+        
+        if (payload.marketOverview.byIndication) {
+          payload.marketOverview.byIndication.forEach(ind => {
+            doc.fontSize(10).fillColor('#4a5568')
+              .text(`  • ${ind.indication}: IN $${(ind.marketSizeIN / 1_000_000_000).toFixed(1)}B | US $${(ind.marketSizeUS / 1_000_000_000).toFixed(1)}B`);
+          });
+        }
+        doc.moveDown(2);
+      }
 
-      doc.moveDown();
+      // Molecule Decisions
+      if (payload.decisions && payload.decisions.length > 0) {
+        doc.fontSize(14).fillColor('#1a365d').text('Molecule-Level Recommendations', { underline: true });
+        doc.moveDown(0.5);
 
-      // Clinical Trials Summary
-      doc.fontSize(14).fillColor('#1a365d').text('Clinical Trials Summary', { underline: true });
-      doc.moveDown(0.5);
+        payload.decisions.forEach((decision, index) => {
+          const strategyColor = decision.overallStrategy === 'GENERIC' ? '#38a169' :
+            decision.overallStrategy === 'LICENSE' ? '#3182ce' :
+            decision.overallStrategy === 'WAIT' ? '#d69e2e' : '#e53e3e';
 
-      payload.trialsSummary.byMolecule.slice(0, 10).forEach((mol) => {
-        doc.fontSize(11).fillColor('#2b6cb0').text(`• ${mol.molecule}: ${mol.trialCount} trial(s)`);
-        const phases = Object.entries(mol.phases).map(([p, c]) => `${p}: ${c}`).join(', ');
-        doc.fontSize(9).fillColor('#718096').text(`  Phases: ${phases}`);
-      });
+          doc.fontSize(12).fillColor('#2b6cb0').text(`${index + 1}. ${decision.molecule} (${decision.indication})`);
+          doc.fontSize(10).fillColor(strategyColor)
+            .text(`   Strategy: ${decision.overallStrategy} | Risk: ${decision.overallRisk} | Innovator: ${decision.innovator}`);
+          
+          // Country-specific recommendations
+          decision.recommendations.forEach(rec => {
+            const goColor = rec.goNoGo === 'GO' ? '#38a169' : rec.goNoGo === 'CONDITIONAL' ? '#d69e2e' : '#e53e3e';
+            doc.fontSize(9).fillColor(goColor)
+              .text(`   ${rec.country}: ${rec.strategy} - ${rec.goNoGo} | Revenue: $${(rec.estimatedRevenueUSD / 1_000_000).toFixed(0)}M | Entry: ${rec.timeToMarketYears.toFixed(1)} yrs`);
+          });
 
-      doc.moveDown();
+          doc.fontSize(9).fillColor('#718096').text(`   FTO: ${decision.ftoSummary}`);
+          doc.moveDown(0.5);
+        });
+        doc.moveDown();
+      }
 
-      // Patent Summary
-      doc.fontSize(14).fillColor('#1a365d').text('Patent Landscape', { underline: true });
-      doc.moveDown(0.5);
+      // Upcoming Patent Expiries
+      if (payload.upcomingPatentExpiries && payload.upcomingPatentExpiries.length > 0) {
+        doc.fontSize(14).fillColor('#1a365d').text('Upcoming Patent Expiries', { underline: true });
+        doc.moveDown(0.5);
 
-      payload.patentSummary.byMolecule.slice(0, 10).forEach((mol) => {
-        const ftoColor = mol.ftoFlag === 'LOW' ? '#38a169' : mol.ftoFlag === 'MEDIUM' ? '#d69e2e' : '#e53e3e';
-        doc.fontSize(11).fillColor('#2b6cb0').text(`• ${mol.molecule}`);
-        doc.fontSize(9).fillColor(ftoColor).text(`  FTO Risk: ${mol.ftoFlag} | Earliest Expiry: ${mol.earliestExpiry}`);
-        doc.fontSize(9).fillColor('#718096').text(`  Jurisdictions: ${mol.jurisdictions.join(', ')}`);
-      });
-
-      doc.moveDown();
+        payload.upcomingPatentExpiries.forEach(expiry => {
+          doc.fontSize(10).fillColor('#4a5568')
+            .text(`• ${expiry.molecule} (${expiry.country}): ${expiry.expiryDate} (${expiry.yearsToExpiry.toFixed(1)} years)`);
+        });
+        doc.moveDown();
+      }
 
       // Recommendations
-      doc.fontSize(14).fillColor('#1a365d').text('Recommendations', { underline: true });
+      doc.fontSize(14).fillColor('#1a365d').text('Action Items', { underline: true });
       doc.moveDown(0.5);
 
       payload.recommendations.forEach((rec, index) => {

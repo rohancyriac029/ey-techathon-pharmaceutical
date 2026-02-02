@@ -7,6 +7,217 @@ export interface AgentTraceEvent {
   detail?: string;
 }
 
+// ============================================
+// COMMERCIAL DECISION TYPES (NEW)
+// These drive business decisions, not just analytics
+// ============================================
+
+export type CommercialStrategy = 'LICENSE' | 'GENERIC' | 'WAIT' | 'DROP';
+export type CommercialRisk = 'LOW' | 'MEDIUM' | 'HIGH';
+export type FTOStatus = 'CLEAR' | 'BLOCKED' | 'EXPIRING_SOON';
+
+// ============================================
+// MOLECULE MASTER DATA
+// ============================================
+
+export interface MoleculeData {
+  name: string;
+  genericName?: string;
+  brandName?: string;
+  indication: string;
+  modality: string;
+  innovatorCompany: string;
+  launchYear?: number;
+}
+
+// ============================================
+// PATENT FTO ANALYSIS (COUNTRY-SPECIFIC)
+// ============================================
+
+export interface PatentInfo {
+  patentNumber: string;
+  patentType: 'COMPOUND' | 'FORMULATION' | 'PROCESS' | 'SECONDARY';
+  isPrimary: boolean;
+  expiryDate: string;
+  status: 'Active' | 'Expired';
+  title?: string;
+}
+
+export interface CountryFTOAnalysis {
+  country: 'IN' | 'US';
+  ftoStatus: FTOStatus;
+  earliestGenericEntry: string;  // Date when generic can enter
+  yearsToGenericEntry: number;
+  blockingPatents: PatentInfo[];
+  expiredPatents: PatentInfo[];
+  riskExplanation: string;       // Plain English explanation
+}
+
+export interface MoleculeFTOResult {
+  molecule: string;
+  byCountry: CountryFTOAnalysis[];
+  overallFTO: FTOStatus;         // Worst case across countries
+  primaryPatentExpired: boolean;
+  hasSecondaryBlocking: boolean;
+}
+
+export interface PatentFTOAgentResult {
+  molecules: MoleculeFTOResult[];
+}
+
+// ============================================
+// CLINICAL MATURITY ASSESSMENT
+// ============================================
+
+export interface ClinicalTrialInfo {
+  trialId?: string;
+  phase: string;
+  status: string;
+  country: string;
+  sponsor: string;
+  outcome?: string;
+  completionDate?: string;
+}
+
+export interface ClinicalMaturityAssessment {
+  molecule: string;
+  indication: string;
+  highestPhaseCompleted: string;  // "Phase III", "Phase IV", etc.
+  hasPhase3Data: boolean;
+  hasLocalTrialData: Record<'IN' | 'US', boolean>;
+  regulatoryStatus: Record<'IN' | 'US', string>;
+  clinicalRiskFlags: string[];    // e.g., ["No local Phase III", "Terminated trial"]
+  maturityScore: number;          // 0-100
+  trials: ClinicalTrialInfo[];
+}
+
+export interface ClinicalMaturityAgentResult {
+  molecules: ClinicalMaturityAssessment[];
+}
+
+// ============================================
+// EPIDEMIOLOGY / MARKET DATA
+// ============================================
+
+export interface DiseaseMarketData {
+  disease: string;
+  country: 'IN' | 'US';
+  year: number;
+  prevalenceMillions: number;
+  incidenceMillions: number;
+  treatedRatePercent: number;
+  avgAnnualTherapyCostUSD: number;
+  marketSizeUSD: number;
+  dataSource?: string;
+}
+
+export interface MoleculeMarketAnalysis {
+  molecule: string;
+  indication: string;
+  marketData: DiseaseMarketData[];
+  estimatedRevenueUSD: Record<'IN' | 'US', number>;  // Addressable market share
+  marketAttractiveness: Record<'IN' | 'US', 'HIGH' | 'MEDIUM' | 'LOW'>;
+  totalAddressableMarketUSD: number;
+}
+
+export interface EpidemiologyMarketAgentResult {
+  molecules: MoleculeMarketAnalysis[];
+}
+
+// ============================================
+// COMMERCIAL DECISION OUTPUT
+// This is what the BD head needs to see
+// ============================================
+
+export interface CountryRecommendation {
+  country: 'IN' | 'US';
+  strategy: CommercialStrategy;
+  timeToMarketYears: number;
+  estimatedRevenueUSD: number;
+  commercialRisk: CommercialRisk;
+  rationale: string;              // Plain English, board-ready
+  goNoGo: 'GO' | 'NO-GO' | 'CONDITIONAL';
+  conditions?: string[];          // What needs to happen for GO
+}
+
+export interface MoleculeDecision {
+  molecule: string;
+  brandName?: string;
+  indication: string;
+  innovator: string;
+  modality: string;
+  
+  // Per-country decisions
+  recommendations: CountryRecommendation[];
+  
+  // Overall assessment
+  overallStrategy: CommercialStrategy;
+  overallRisk: CommercialRisk;
+  priorityRank: number;
+  
+  // Supporting data
+  ftoSummary: string;             // "Patents expired in IN, blocking until 2028 in US"
+  clinicalSummary: string;        // "Phase III completed, approved in both markets"
+  marketSummary: string;          // "$8.2B market in India, 45% treated"
+  
+  // Key dates
+  earliestEntryIN?: string;
+  earliestEntryUS?: string;
+}
+
+export interface CommercialDecisionAgentResult {
+  decisions: MoleculeDecision[];
+  summary: {
+    totalMolecules: number;
+    licenseOpportunities: number;
+    genericOpportunities: number;
+    waitOpportunities: number;
+    dropRecommendations: number;
+  };
+}
+
+// ============================================
+// SYNTHESIS RESULT (UPDATED)
+// Supports both new decision-driven format and legacy format
+// ============================================
+
+export interface SynthesisResult {
+  // New decision-driven format
+  decisions?: MoleculeDecision[];
+  marketInsights?: MarketInsights;
+  executiveSummary?: string;
+  
+  // Legacy format (for backward compatibility with old synthesisEngine)
+  opportunities?: Opportunity[];
+  overallConfidence?: number;
+  confidenceDecomposition?: ConfidenceDecomposition;
+}
+
+export interface MarketInsights {
+  totalMoleculesAnalyzed: number;
+  totalAddressableMarketUSD?: number;
+  byIndication?: Array<{
+    indication: string;
+    molecules: number;
+    marketSizeUSD: number;
+  }>;
+  topOpportunity?: {
+    molecule: string;
+    strategy: CommercialStrategy;
+    estimatedRevenueUSD: number;
+  };
+  // Legacy fields for backward compatibility with old synthesisEngine
+  strongLicensingCandidates?: number;
+  lowFtoCount?: number;
+  mediumFtoCount?: number;
+  highFtoCount?: number;
+  avgCompetitionIndex?: number;
+}
+
+// ============================================
+// LEGACY TYPES (kept for backward compatibility)
+// ============================================
+
 export interface MoleculeTrialData {
   molecule: string;
   trialCount: number;
@@ -35,9 +246,6 @@ export interface PatentAgentResult {
   patentCliff: PatentCliffData;
 }
 
-// ============================================
-// Patent Cliff Radar Data
-// ============================================
 export interface PatentCliffData {
   expiring1Year: PatentCliffEntry[];
   expiring3Years: PatentCliffEntry[];
@@ -52,9 +260,6 @@ export interface PatentCliffEntry {
   yearsToExpiry: number;
 }
 
-// ============================================
-// Score Breakdown for Explainability
-// ============================================
 export interface ScoreBreakdown {
   baseScore: number;
   trialScore: number;
@@ -65,9 +270,6 @@ export interface ScoreBreakdown {
   total: number;
 }
 
-// ============================================
-// Competitive Intensity
-// ============================================
 export type CompetitiveIntensity = 'UNDERCROWDED' | 'COMPETITIVE' | 'SATURATED';
 
 export interface CompetitiveAnalysis {
@@ -75,12 +277,9 @@ export interface CompetitiveAnalysis {
   sponsorCount: number;
   trialCount: number;
   jurisdictionCount: number;
-  indexScore: number; // 0-100
+  indexScore: number;
 }
 
-// ============================================
-// Licensing Signal
-// ============================================
 export type LicensingSignal = 'STRONG' | 'MODERATE' | 'WEAK' | 'NONE';
 
 export interface LicensingAnalysis {
@@ -91,63 +290,34 @@ export interface LicensingAnalysis {
   sponsorDiversity: number;
 }
 
-// ============================================
-// Geographic Readiness
-// ============================================
 export interface GeoReadiness {
   country: string;
-  readinessScore: number; // 0-1
+  readinessScore: number;
   hasTrials: boolean;
   hasFavorablePatent: boolean;
   sponsorPresence: boolean;
 }
 
-// ============================================
-// Enhanced Opportunity with Explainability
-// ============================================
+// Legacy Opportunity type - now replaced by MoleculeDecision
 export interface Opportunity {
   molecule: string;
   rank: number;
   confidence: number;
   rationale: string;
   ftoFlag: string;
-  // Explainability fields
   scoreBreakdown?: ScoreBreakdown;
   competitiveAnalysis?: CompetitiveAnalysis;
   licensingAnalysis?: LicensingAnalysis;
   geoReadiness?: GeoReadiness[];
 }
 
-// ============================================
-// Confidence Decomposition
-// ============================================
 export interface ConfidenceDecomposition {
   overall: number;
-  dataConfidence: number;    // Based on trial + patent data
-  aiConfidence: number;      // Based on AI inference
+  dataConfidence: number;
+  aiConfidence: number;
   breakdown: {
     trialDataScore: number;
     patentDataScore: number;
     aiAnalysisScore: number;
   };
-}
-
-// ============================================
-// Enhanced Synthesis Result
-// ============================================
-export interface SynthesisResult {
-  opportunities: Opportunity[];
-  overallConfidence: number;
-  // Enhanced analytics
-  confidenceDecomposition: ConfidenceDecomposition;
-  marketInsights: MarketInsights;
-}
-
-export interface MarketInsights {
-  totalMoleculesAnalyzed: number;
-  lowFtoCount: number;
-  mediumFtoCount: number;
-  highFtoCount: number;
-  avgCompetitionIndex: number;
-  strongLicensingCandidates: number;
 }

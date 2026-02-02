@@ -11,7 +11,8 @@ export const ExecutionPlanSchema = z.object({
   country: z.string().optional(),
   molecule: z.string().optional(),
   objectives: z.array(z.string()).optional(),
-  agentsToRun: z.array(z.enum(['clinical', 'patent'])).default(['clinical', 'patent']),
+  agentsToRun: z.array(z.enum(['clinical', 'patent', 'scope', 'fto', 'market', 'decision']))
+    .default(['scope', 'fto', 'clinical', 'market', 'decision']),
 });
 
 export type ExecutionPlan = z.infer<typeof ExecutionPlanSchema>;

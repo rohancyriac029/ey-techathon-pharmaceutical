@@ -3,25 +3,24 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export interface TrialFilters {
-  condition?: string;
+  indication?: string;  // Changed from condition
   country?: string;
   molecule?: string;
   phase?: string;
+  status?: string;
 }
 
 class ClinicalDataService {
   async findTrials(filters: TrialFilters) {
     const where: any = {};
 
-    if (filters.condition) {
-      where.condition = {
-        contains: filters.condition,
+    if (filters.indication) {
+      where.indication = {
+        contains: filters.indication,
       };
     }
     if (filters.country) {
-      where.country = {
-        contains: filters.country,
-      };
+      where.country = filters.country;
     }
     if (filters.molecule) {
       where.molecule = {
@@ -30,6 +29,9 @@ class ClinicalDataService {
     }
     if (filters.phase) {
       where.phase = filters.phase;
+    }
+    if (filters.status) {
+      where.status = filters.status;
     }
 
     return prisma.clinicalTrial.findMany({ where });
@@ -46,6 +48,25 @@ class ClinicalDataService {
           contains: molecule,
         },
       },
+      orderBy: { phase: 'desc' },
+    });
+  }
+
+  async getTrialsByCountry(country: 'IN' | 'US') {
+    return prisma.clinicalTrial.findMany({
+      where: { country },
+      orderBy: { phase: 'desc' },
+    });
+  }
+
+  async getTrialsByIndication(indication: string) {
+    return prisma.clinicalTrial.findMany({
+      where: {
+        indication: {
+          contains: indication,
+        },
+      },
+      orderBy: { phase: 'desc' },
     });
   }
 }

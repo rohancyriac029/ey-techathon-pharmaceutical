@@ -7,6 +7,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// ============================================
+// CORE WORKFLOW MODELS
+// ============================================
+
 model Job {
   id        String   @id @default(cuid())
   queryText String
@@ -23,29 +27,107 @@ model Report {
   id         String   @id @default(cuid())
   jobId      String   @unique
   summary    String
-  confidence Float
+  confidence Float    // Legacy field - now stores commercial viability score
   pdfPath    String?
   data       String?  // JSON string for full report data
   createdAt  DateTime @default(now())
   job        Job      @relation(fields: [jobId], references: [id])
 }
 
-model ClinicalTrial {
-  id        String @id @default(cuid())
-  condition String
-  molecule  String
-  phase     String
-  sponsor   String
-  country   String
-  citations String
+// ============================================
+// MOLECULE MASTER DATA (NEW)
+// Curated list of 8 strategic molecules
+// ============================================
+
+model Molecule {
+  id               String   @id @default(cuid())
+  name             String   @unique  // e.g., "Semaglutide"
+  genericName      String?           // e.g., "semaglutide"
+  brandName        String?           // e.g., "Ozempic/Wegovy"
+  indication       String            // e.g., "Type 2 Diabetes"
+  modality         String            // "small-molecule" | "mAb" | "biosimilar" | "peptide"
+  innovatorCompany String            // e.g., "Novo Nordisk"
+  launchYear       Int?              // Year of first approval
+  createdAt        DateTime @default(now())
 }
+
+// ============================================
+// PATENT DATA (REFACTORED)
+// Country-specific with patent types
+// ============================================
 
 model Patent {
   id           String   @id @default(cuid())
-  molecule     String
-  jurisdiction String
-  status       String
+  molecule     String            // FK to Molecule.name
+  country      String            // "IN" | "US" only
+  patentNumber String            // e.g., "US7,919,598"
+  patentType   String            // "COMPOUND" | "FORMULATION" | "PROCESS" | "SECONDARY"
+  isPrimary    Boolean @default(false)  // True for compound/NCE patents
+  status       String            // "Active" | "Expired"
+  filingDate   DateTime?
   expiryDate   DateTime
-  ftoFlag      String
-  citations    String
+  title        String?           // Patent title
+  assignee     String?           // Patent holder
+  createdAt    DateTime @default(now())
+}
+
+// ============================================
+// DISEASE MARKET DATA (NEW)
+// Epidemiology + market sizing per country
+// ============================================
+
+model DiseaseMarket {
+  id                      String   @id @default(cuid())
+  disease                 String   // "COPD" | "Type 2 Diabetes" | "NSCLC"
+  country                 String   // "IN" | "US"
+  year                    Int      // Reference year for data
+  prevalenceMillions      Float    // Number of patients (millions)
+  incidenceMillions       Float    // New cases per year (millions)
+  treatedRatePercent      Float    // % of patients receiving treatment
+  avgAnnualTherapyCostUSD Float    // Average annual cost per patient
+  marketSizeUSD           Float?   // Calculated: prevalence * treatedRate * cost
+  dataSource              String?  // e.g., "WHO 2024", "IQVIA"
+  createdAt               DateTime @default(now())
+
+  @@unique([disease, country, year])
+}
+
+// ============================================
+// CLINICAL TRIAL DATA (REFACTORED)
+// More structured for regulatory assessment
+// ============================================
+
+model ClinicalTrial {
+  id             String   @id @default(cuid())
+  molecule       String            // FK to Molecule.name
+  indication     String            // Disease being treated
+  phase          String            // "Phase I" | "Phase II" | "Phase III" | "Phase IV"
+  status         String   @default("Completed")  // "Recruiting" | "Completed" | "Terminated"
+  country        String            // "IN" | "US"
+  sponsor        String
+  trialId        String?           // NCT number or CTRI number
+  startDate      DateTime?
+  completionDate DateTime?
+  primaryEndpoint String?          // Key efficacy measure
+  outcome        String?           // "Positive" | "Negative" | "Mixed" | "Ongoing"
+  citations      String
+  createdAt      DateTime @default(now())
+}
+
+// ============================================
+// REGULATORY STATUS (NEW)
+// Track approval status per country
+// ============================================
+
+model RegulatoryStatus {
+  id              String   @id @default(cuid())
+  molecule        String            // FK to Molecule.name
+  country         String            // "IN" | "US"
+  status          String            // "Approved" | "Under Review" | "Not Filed" | "Rejected"
+  approvalDate    DateTime?
+  approvalType    String?           // "NDA" | "ANDA" | "BLA" | "505(b)(2)"
+  referenceProduct String?          // For generics/biosimilars
+  createdAt       DateTime @default(now())
+
+  @@unique([molecule, country])
 }
