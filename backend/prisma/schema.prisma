@@ -131,3 +131,96 @@ model RegulatoryStatus {
 
   @@unique([molecule, country])
 }
+
+// ============================================
+// DRUG PRICING DATA (NEW)
+// Real pricing data from CMS Medicare Part D (US) and NPPA (India)
+// ============================================
+
+model DrugPricing {
+  id                String   @id @default(cuid())
+  molecule          String            // FK to Molecule.name
+  country           String            // "IN" | "US"
+  year              Int               // Data year (e.g., 2023)
+  
+  // US Medicare Part D data (from CMS)
+  totalSpendingUSD  Float?            // Total Medicare spending
+  totalClaims       Int?              // Number of claims
+  costPerClaimUSD   Float?            // Average cost per claim
+  beneficiaries     Int?              // Number of unique patients
+  
+  // Generic pricing data
+  brandPriceUSD     Float?            // Reference/brand price per unit
+  genericPriceUSD   Float?            // Average generic price per unit
+  priceErosionPct   Float?            // % price decline from brand
+  
+  // India specific (from NPPA/market data)
+  mrpINR            Float?            // Maximum retail price per unit
+  ceilingPriceINR   Float?            // NPPA ceiling price (if scheduled)
+  
+  dataSource        String            // "CMS Medicare Part D 2023", "NPPA 2024"
+  dataConfidence    String  @default("MEDIUM")  // "HIGH" | "MEDIUM" | "LOW"
+  createdAt         DateTime @default(now())
+
+  @@unique([molecule, country, year])
+}
+
+// ============================================
+// GENERIC COMPETITION DATA (NEW)
+// Real competition data from FDA Orange Book and CDSCO
+// ============================================
+
+model GenericCompetition {
+  id                    String   @id @default(cuid())
+  molecule              String            // FK to Molecule.name
+  country               String            // "IN" | "US"
+  year                  Int               // Data year
+  
+  // Competition metrics
+  genericApprovals      Int               // Number of approved ANDAs/generics
+  biosimilarApprovals   Int     @default(0)  // Number of biosimilars (for biologics)
+  activeManufacturers   Int               // Currently marketing the product
+  
+  // Key competitors (JSON array of company names)
+  topCompetitors        String?           // JSON: ["Teva", "Mylan", "Sun Pharma"]
+  firstGenericDate      DateTime?         // Date of first generic entry
+  
+  // Market dynamics
+  brandMarketSharePct   Float?            // Brand's remaining market share %
+  genericPenetrationPct Float?            // % of market taken by generics
+  avgGenericPriceVsBrandPct Float?        // Generic price as % of brand
+  
+  // Competitive intensity scoring
+  competitionIntensity  String  @default("LOW")  // "LOW" | "MEDIUM" | "HIGH"
+  
+  dataSource            String            // "FDA Orange Book 2024", "CDSCO"
+  createdAt             DateTime @default(now())
+
+  @@unique([molecule, country, year])
+}
+
+// ============================================
+// MARKET GROWTH DATA (NEW)
+// Historical and projected market growth rates
+// ============================================
+
+model MarketGrowth {
+  id                String   @id @default(cuid())
+  disease           String            // "COPD" | "Type 2 Diabetes" | "NSCLC"
+  country           String            // "IN" | "US"
+  year              Int               // Reference year
+  
+  // Historical growth
+  cagr5YearHistoric Float?            // 5-year historical CAGR %
+  
+  // Projected growth
+  cagr5YearProjected Float?           // 5-year projected CAGR %
+  
+  // Market dynamics
+  genericErosionRate Float?           // Annual price erosion rate for generics %
+  
+  dataSource         String           // "IQVIA 2024", "Evaluate Pharma"
+  createdAt          DateTime @default(now())
+
+  @@unique([disease, country, year])
+}

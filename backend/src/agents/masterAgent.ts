@@ -116,46 +116,60 @@ Return only valid JSON. Example:
       }
     } catch (parseError) {
       console.error('Failed to parse execution plan, using manual extraction');
-      // Manual extraction fallback
-      const lowerQuery = queryText.toLowerCase();
-      
-      if (lowerQuery.includes('india') || lowerQuery.includes(' in ')) plan.country = 'India';
-      if (lowerQuery.includes('usa') || lowerQuery.includes('united states') || lowerQuery.includes(' us ')) plan.country = 'USA';
-      
-      // COPD / Respiratory
-      if (lowerQuery.includes('respiratory') || lowerQuery.includes('copd') || 
-          lowerQuery.includes('lung disease') || lowerQuery.includes('pulmonary') ||
-          lowerQuery.includes('chronic obstructive')) {
-        plan.condition = 'COPD';
-      }
-      // Type 2 Diabetes
-      else if (lowerQuery.includes('diabetes') || lowerQuery.includes('t2d') ||
-               lowerQuery.includes('diabetic') || lowerQuery.includes('type 2')) {
-        plan.condition = 'Type 2 Diabetes';
-      }
-      // NSCLC / Oncology
-      else if (lowerQuery.includes('cancer') || lowerQuery.includes('oncology') || 
-               lowerQuery.includes('nsclc') || lowerQuery.includes('tumor')) {
-        plan.condition = 'NSCLC';
-      }
-      // Rheumatoid Arthritis
-      else if (lowerQuery.includes('arthritis') || lowerQuery.includes('rheumatoid') ||
-               lowerQuery.includes('autoimmune')) {
-        plan.condition = 'Rheumatoid Arthritis';
-      }
-      // Cardiovascular
-      else if (lowerQuery.includes('cardiovascular') || lowerQuery.includes('heart') ||
-               lowerQuery.includes('cholesterol') || lowerQuery.includes('statin') ||
-               lowerQuery.includes('lipid')) {
-        plan.condition = 'Cardiovascular';
-      }
-      // Hypertension
-      else if (lowerQuery.includes('hypertension') || lowerQuery.includes('blood pressure') ||
-               lowerQuery.includes('high bp')) {
-        plan.condition = 'Hypertension';
-      }
-      
-      // Check for specific molecules
+    }
+
+    // ALWAYS run manual extraction to verify/supplement AI parsing
+    // This ensures we catch conditions even if AI returns slightly different wording
+    const lowerQuery = queryText.toLowerCase();
+    
+    // Country detection
+    if (!plan.country) {
+      if (lowerQuery.includes('india') || lowerQuery.match(/\bin\b/)) plan.country = 'India';
+      if (lowerQuery.includes('usa') || lowerQuery.includes('united states') || lowerQuery.match(/\bus\b/)) plan.country = 'USA';
+    }
+    
+    // Condition detection - ALWAYS check and override if we find a clear match
+    // NSCLC / Oncology - check FIRST since it's commonly misspelled
+    if (lowerQuery.includes('nsclc') || lowerQuery.includes('nslc') || 
+        lowerQuery.includes('lung cancer') || lowerQuery.includes('non-small cell') ||
+        (lowerQuery.includes('oncology') && !lowerQuery.includes('immuno'))) {
+      plan.condition = 'NSCLC';
+      console.log('🎯 Detected NSCLC condition from query');
+    }
+    // COPD / Respiratory
+    else if (lowerQuery.includes('respiratory') || lowerQuery.includes('copd') || 
+        lowerQuery.includes('lung disease') || lowerQuery.includes('pulmonary') ||
+        lowerQuery.includes('chronic obstructive')) {
+      plan.condition = 'COPD';
+    }
+    // Type 2 Diabetes
+    else if (lowerQuery.includes('diabetes') || lowerQuery.includes('t2d') ||
+             lowerQuery.includes('diabetic') || lowerQuery.includes('type 2')) {
+      plan.condition = 'Type 2 Diabetes';
+    }
+    // Rheumatoid Arthritis
+    else if (lowerQuery.includes('arthritis') || lowerQuery.includes('rheumatoid') ||
+             lowerQuery.includes('autoimmune') || lowerQuery.match(/\bra\b/)) {
+      plan.condition = 'Rheumatoid Arthritis';
+    }
+    // Cardiovascular
+    else if (lowerQuery.includes('cardiovascular') || lowerQuery.includes('heart') ||
+             lowerQuery.includes('cholesterol') || lowerQuery.includes('statin') ||
+             lowerQuery.includes('lipid') || lowerQuery.match(/\bcv\b/)) {
+      plan.condition = 'Cardiovascular';
+    }
+    // Hypertension
+    else if (lowerQuery.includes('hypertension') || lowerQuery.includes('blood pressure') ||
+             lowerQuery.includes('high bp') || lowerQuery.match(/\bhtn\b/)) {
+      plan.condition = 'Hypertension';
+    }
+    // Generic cancer/tumor queries -> NSCLC
+    else if (lowerQuery.includes('cancer') || lowerQuery.includes('tumor')) {
+      plan.condition = 'NSCLC';
+    }
+    
+    // Check for specific molecules
+    if (!plan.molecule) {
       const molecules = ['semaglutide', 'sitagliptin', 'empagliflozin', 'tiotropium', 
                         'roflumilast', 'osimertinib', 'pembrolizumab', 'umeclidinium',
                         'indacaterol', 'metformin', 'erlotinib', 'gefitinib',
@@ -169,6 +183,9 @@ Return only valid JSON. Example:
         }
       }
     }
+    
+    // Log what was detected for debugging
+    console.log(`📋 Query parsed: condition=${plan.condition || 'ALL'}, country=${plan.country || 'IN+US'}, molecule=${plan.molecule || 'all'}`);
 
     await jobService.appendTraceEvent(jobId, {
       agent: 'MasterAgent',

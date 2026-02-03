@@ -88,6 +88,7 @@ export async function runMoleculeScopeAgent(
         'cancer': ['NSCLC'],
         'oncology': ['NSCLC'],
         'nsclc': ['NSCLC'],
+        'nslc': ['NSCLC'],  // Common typo
         'lung cancer': ['NSCLC'],
         'non-small cell lung cancer': ['NSCLC'],
         

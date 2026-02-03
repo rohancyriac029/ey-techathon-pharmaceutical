@@ -109,6 +109,36 @@ export interface DiseaseMarketData {
   avgAnnualTherapyCostUSD: number;
   marketSizeUSD: number;
   dataSource?: string;
+  // Enhanced fields
+  cagr5YearProjected?: number;
+  genericErosionRate?: number;
+}
+
+// NEW: Drug-specific pricing data
+export interface DrugPricingInfo {
+  country: 'IN' | 'US';
+  year: number;
+  totalSpendingUSD?: number;
+  totalClaims?: number;
+  brandPriceUSD?: number;
+  genericPriceUSD?: number;
+  priceErosionPct?: number;
+  dataSource: string;
+  dataConfidence: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+// NEW: Competition analysis data
+export interface CompetitionInfo {
+  country: 'IN' | 'US';
+  genericApprovals: number;
+  biosimilarApprovals: number;
+  activeManufacturers: number;
+  topCompetitors?: string[];
+  firstGenericDate?: string;
+  brandMarketSharePct?: number;
+  genericPenetrationPct?: number;
+  competitionIntensity: 'LOW' | 'MEDIUM' | 'HIGH';
+  dataSource: string;
 }
 
 export interface MoleculeMarketAnalysis {
@@ -118,6 +148,11 @@ export interface MoleculeMarketAnalysis {
   estimatedRevenueUSD: Record<'IN' | 'US', number>;  // Addressable market share
   marketAttractiveness: Record<'IN' | 'US', 'HIGH' | 'MEDIUM' | 'LOW'>;
   totalAddressableMarketUSD: number;
+  // NEW: Enhanced data
+  pricingData?: DrugPricingInfo[];
+  competitionData?: CompetitionInfo[];
+  adjustedMarketShare?: Record<'IN' | 'US', number>;  // Competition-adjusted %
+  revenueExplanation?: Record<'IN' | 'US', string>;   // How revenue was calculated
 }
 
 export interface EpidemiologyMarketAgentResult {

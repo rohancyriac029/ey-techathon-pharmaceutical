@@ -13,6 +13,116 @@ import { ReportPayload } from '../types/report';
 
 const prisma = new PrismaClient();
 
+/**
+ * Generate a detailed fallback summary when AI is unavailable
+ */
+function generateFallbackSummary(
+  queryText: string,
+  decisionSummary: { totalMolecules: number; genericOpportunities: number; licenseOpportunities: number; waitOpportunities: number; dropRecommendations: number },
+  totalAddressableMarketUSD: number,
+  strategySummary: { generic: string[]; license: string[]; wait: string[]; drop: string[] },
+  topDecisions: MoleculeDecision[],
+  filterCriteria: { indication?: string; country?: string }
+): string {
+  const marketB = (totalAddressableMarketUSD / 1_000_000_000).toFixed(1);
+  const indication = filterCriteria.indication || 'multiple therapeutic areas';
+  
+  // Build a rich summary based on the actual data
+  let summary = `**Executive Summary: ${indication} Market Analysis**\n\n`;
+  
+  summary += `This analysis evaluated ${decisionSummary.totalMolecules} molecules for ${indication}, `;
+  summary += `representing a total addressable market of $${marketB} billion across India and US markets. `;
+  
+  if (decisionSummary.genericOpportunities > 0) {
+    const topGenerics = strategySummary.generic.slice(0, 3);
+    summary += `\n\n**Generic Opportunities (${decisionSummary.genericOpportunities} molecules):** `;
+    summary += `Key candidates include ${topGenerics.join(', ')}. `;
+    
+    // Find the top generic decision for more details
+    const topGenericDecision = topDecisions.find(d => d.overallStrategy === 'GENERIC');
+    if (topGenericDecision) {
+      summary += `${topGenericDecision.molecule} presents an immediate opportunity with `;
+      summary += `${topGenericDecision.overallRisk} risk profile. `;
+    }
+  }
+  
+  if (decisionSummary.licenseOpportunities > 0) {
+    const topLicenses = strategySummary.license.slice(0, 3);
+    summary += `\n\n**Licensing Opportunities (${decisionSummary.licenseOpportunities} molecules):** `;
+    summary += `Molecules suitable for licensing include ${topLicenses.join(', ')}. `;
+    summary += `These represent patent-protected assets requiring partnership or in-licensing strategies.`;
+  }
+  
+  if (decisionSummary.dropRecommendations > 0) {
+    summary += `\n\n**Not Recommended (${decisionSummary.dropRecommendations} molecules):** `;
+    summary += `${strategySummary.drop.slice(0, 2).join(' and ')} `;
+    summary += `are not recommended due to extended patent protection or unfavorable market dynamics.`;
+  }
+  
+  summary += `\n\n**Strategic Recommendation:** `;
+  if (decisionSummary.genericOpportunities > 0) {
+    summary += `Prioritize generic development for near-term revenue generation. `;
+  }
+  if (decisionSummary.licenseOpportunities > 0) {
+    summary += `Pursue licensing discussions for high-value protected assets.`;
+  }
+  
+  return summary;
+}
+
+/**
+ * Generate fallback recommendations when AI is unavailable
+ */
+function generateFallbackRecommendations(
+  strategySummary: { generic: string[]; license: string[]; wait: string[]; drop: string[] },
+  topDecisions: MoleculeDecision[]
+): string[] {
+  const recommendations: string[] = [];
+  
+  // Generic recommendations
+  if (strategySummary.generic.length > 0) {
+    const topGeneric = strategySummary.generic[0];
+    recommendations.push(`Initiate ANDA/generic filing for ${topGeneric} - immediate market entry opportunity`);
+  }
+  
+  // License recommendations
+  if (strategySummary.license.length > 0) {
+    const topLicense = strategySummary.license[0];
+    recommendations.push(`Explore licensing partnership for ${topLicense} with originator company`);
+  }
+  
+  // Market-specific recommendation
+  const indiaPriority = topDecisions.find(d => 
+    d.recommendations?.some(r => r.country === 'IN' && r.goNoGo === 'GO')
+  );
+  if (indiaPriority) {
+    recommendations.push(`Fast-track India market entry for ${indiaPriority.molecule} - favorable patent landscape`);
+  }
+  
+  // Generic portfolio recommendation
+  if (strategySummary.generic.length > 2) {
+    recommendations.push(`Build generic portfolio with ${strategySummary.generic.slice(0, 3).join(', ')} for diversified revenue`);
+  }
+  
+  // Fill remaining slots with generic advice
+  while (recommendations.length < 4) {
+    const genericRecs = [
+      'Conduct detailed FTO analysis for top candidates before filing',
+      'Engage regulatory consultants for market-specific approval pathways',
+      'Monitor competitive landscape for biosimilar/generic entrants',
+      'Evaluate manufacturing partnerships for cost-effective production',
+    ];
+    const unused = genericRecs.find(r => !recommendations.includes(r));
+    if (unused) {
+      recommendations.push(unused);
+    } else {
+      break;
+    }
+  }
+  
+  return recommendations.slice(0, 4);
+}
+
 export interface GenerateReportParams {
   jobId: string;
   queryText: string;
@@ -146,18 +256,16 @@ Strategy Breakdown:
 
 Write a professional summary highlighting key commercial opportunities and strategic implications for BD leadership.`;
 
-    let summary = `Analysis complete for ${decisionSummary.totalMolecules} molecules across India and US markets. ` +
-      `Identified ${decisionSummary.genericOpportunities} generic opportunities and ${decisionSummary.licenseOpportunities} licensing candidates.`;
+    let summary = generateFallbackSummary(queryText, decisionSummary, totalAddressableMarketUSD, strategySummary, topDecisions, filterCriteria);
     
-    let recommendations: string[] = [
-      'Prioritize generic filings for molecules with expired patents in target markets',
-      'Evaluate licensing opportunities for high-value molecules with patent protection',
-      'Monitor patent expiry timelines for WAIT-listed molecules',
-    ];
+    let recommendations: string[] = generateFallbackRecommendations(strategySummary, topDecisions);
 
     try {
       const summaryResponse = await callGemini(summaryPrompt);
-      summary = summaryResponse.trim();
+      if (summaryResponse && summaryResponse.trim().length > 100) {
+        summary = summaryResponse.trim();
+      }
+      // If AI response is too short, keep the detailed fallback
 
       // Generate actionable recommendations
       const recsPrompt = `Based on this pharmaceutical BD analysis, provide exactly 4 board-level action items as a JSON array:
