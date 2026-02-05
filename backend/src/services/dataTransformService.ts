@@ -47,6 +47,16 @@ export interface PatentCreate {
   expiryDate: Date;
   title?: string;
   assignee?: string;
+  claims?: string;
+  applicant?: string;
+  devicePatent?: boolean;
+  litigationHistory?: any;
+  litigationRisk?: string;
+  dataQuality?: string;
+  confidenceLevel?: string;
+  dataSource?: string;
+  reviewedBy?: string;
+  notes?: string;
 }
 
 export interface RegulatoryStatusCreate {
@@ -145,15 +155,10 @@ function parseDate(dateStr?: string): Date | undefined {
 }
 
 /**
- * Determine outcome from trial status and results
+ * NOTE: determineOutcome() has been REMOVED
+ * We no longer fabricate trial outcomes based on status.
+ * Trial outcomes should be null unless verified from published papers/ClinicalTrials.gov results.
  */
-function determineOutcome(trial: ClinicalTrialRaw): string {
-  const status = trial.overallStatus.toUpperCase();
-  if (status.includes('COMPLETED')) return 'Positive'; // Assume positive if completed
-  if (status.includes('TERMINATED') || status.includes('WITHDRAWN')) return 'Negative';
-  if (status.includes('RECRUITING') || status.includes('ACTIVE')) return 'Ongoing';
-  return 'Positive';
-}
 
 // ============================================
 // MAIN TRANSFORMATION FUNCTIONS
@@ -194,7 +199,7 @@ export function transformClinicalTrials(
     startDate: parseDate(trial.startDate),
     completionDate: parseDate(trial.completionDate),
     primaryEndpoint: trial.primaryOutcomes?.[0]?.measure || 'Efficacy endpoint',
-    outcome: determineOutcome(trial),
+    outcome: undefined, // Do not fabricate outcomes - must be verified from published results
     citations: `ClinicalTrials.gov: ${trial.nctId}`,
   }));
 }
@@ -251,68 +256,10 @@ export function transformRegulatoryStatus(data: MoleculeData): RegulatoryStatusC
 }
 
 /**
- * Generate estimated patent data based on FDA approval
- * Note: Real patent data would require Orange Book or USPTO API
+ * NOTE: generateEstimatedPatents() has been REMOVED
+ * We no longer generate fake patent numbers.
+ * Use patentDataService.fetchPatents() to get real patent data from Orange Book/USPTO/curated sources.
  */
-export function generateEstimatedPatents(data: MoleculeData): PatentCreate[] {
-  const results: PatentCreate[] = [];
-  
-  if (!data.fdaData) return results;
-  
-  const approvalDate = getOriginalApprovalDate(data.fdaData);
-  const baseYear = approvalDate ? approvalDate.getFullYear() : 2015;
-  
-  // Compound patent (typically 20 years from filing, filed ~5 years before approval)
-  const compoundFilingYear = baseYear - 5;
-  const compoundExpiryYear = compoundFilingYear + 20;
-  
-  // Generate US patents
-  results.push({
-    molecule: data.molecule.name,
-    country: 'US',
-    patentNumber: `US${7000000 + Math.floor(Math.random() * 3000000)}`,
-    patentType: 'COMPOUND',
-    isPrimary: true,
-    status: compoundExpiryYear > 2026 ? 'Active' : 'Expired',
-    filingDate: new Date(compoundFilingYear, 0, 1),
-    expiryDate: new Date(compoundExpiryYear, 11, 31),
-    title: `${data.molecule.genericName} compound and uses thereof`,
-    assignee: data.molecule.innovator,
-  });
-  
-  // Formulation patent (typically filed closer to approval)
-  const formulationFilingYear = baseYear - 2;
-  const formulationExpiryYear = formulationFilingYear + 20;
-  
-  results.push({
-    molecule: data.molecule.name,
-    country: 'US',
-    patentNumber: `US${8000000 + Math.floor(Math.random() * 3000000)}`,
-    patentType: 'FORMULATION',
-    isPrimary: false,
-    status: formulationExpiryYear > 2026 ? 'Active' : 'Expired',
-    filingDate: new Date(formulationFilingYear, 5, 1),
-    expiryDate: new Date(formulationExpiryYear, 5, 30),
-    title: `Pharmaceutical formulations of ${data.molecule.genericName}`,
-    assignee: data.molecule.innovator,
-  });
-  
-  // Generate India patents (typically similar timing)
-  results.push({
-    molecule: data.molecule.name,
-    country: 'IN',
-    patentNumber: `IN${200000 + Math.floor(Math.random() * 100000)}`,
-    patentType: 'COMPOUND',
-    isPrimary: true,
-    status: compoundExpiryYear > 2026 ? 'Active' : 'Expired',
-    filingDate: new Date(compoundFilingYear, 0, 1),
-    expiryDate: new Date(compoundExpiryYear, 11, 31),
-    title: `${data.molecule.genericName} compound`,
-    assignee: data.molecule.innovator,
-  });
-  
-  return results;
-}
 
 /**
  * Generate disease market data
@@ -469,6 +416,5 @@ export default {
   transformMolecule,
   transformClinicalTrials,
   transformRegulatoryStatus,
-  generateEstimatedPatents,
   generateDiseaseMarketData,
 };

@@ -6,6 +6,32 @@ interface DashboardProps {
   onSuggestedQuery?: (query: string) => void;
 }
 
+// Simple markdown to JSX converter for executive summary
+const renderMarkdown = (text: string) => {
+  if (!text) return null;
+  
+  // Split by paragraphs (double newlines)
+  const paragraphs = text.split(/\n\n+/);
+  
+  return paragraphs.map((para, idx) => {
+    // Convert **bold** to <strong>
+    const parts = para.split(/(\*\*[^*]+\*\*)/g);
+    
+    const content = parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>;
+      }
+      return <span key={i}>{part}</span>;
+    });
+    
+    return (
+      <p key={idx} className="text-gray-700 leading-relaxed mb-4 last:mb-0">
+        {content}
+      </p>
+    );
+  });
+};
+
 // Strategy color mapping
 const getStrategyColor = (strategy: CommercialStrategy) => {
   switch (strategy) {
@@ -153,8 +179,85 @@ const MoleculeDecisionCard: React.FC<{ decision: MoleculeDecision }> = ({ decisi
             <div className="text-xs text-green-600 font-semibold mb-1">💰 Market Summary</div>
             <p className="text-sm text-gray-700">{decision.marketSummary}</p>
           </div>
-        </div>
-      </div>
+        </div>        
+        {/* Patent Details */}
+        {decision.patentDetails && (
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* India Patents */}
+            <div className="bg-orange-50 rounded-lg p-3">
+              <div className="text-xs text-orange-600 font-semibold mb-2 flex items-center gap-1">
+                🇮🇳 India Patents
+              </div>
+              {decision.patentDetails.IN.blocking.length > 0 && (
+                <div className="mb-2">
+                  <div className="text-xs font-medium text-red-700 mb-1">🔒 Blocking ({decision.patentDetails.IN.blocking.length})</div>
+                  {decision.patentDetails.IN.blocking.slice(0, 3).map((p, i) => (
+                    <div key={i} className="text-xs text-gray-700 ml-2">
+                      • <span className="font-mono">{p.patentNumber}</span> expires {new Date(p.expiryDate).toLocaleDateString()} 
+                      <span className="text-gray-500"> ({p.patentType})</span>
+                    </div>
+                  ))}
+                  {decision.patentDetails.IN.blocking.length > 3 && (
+                    <div className="text-xs text-gray-500 ml-2">+ {decision.patentDetails.IN.blocking.length - 3} more</div>
+                  )}
+                </div>
+              )}
+              {decision.patentDetails.IN.expired.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-green-700 mb-1">✅ Expired ({decision.patentDetails.IN.expired.length})</div>
+                  {decision.patentDetails.IN.expired.slice(0, 2).map((p, i) => (
+                    <div key={i} className="text-xs text-gray-600 ml-2">
+                      • <span className="font-mono">{p.patentNumber}</span> expired {new Date(p.expiryDate).toLocaleDateString()}
+                    </div>
+                  ))}
+                  {decision.patentDetails.IN.expired.length > 2 && (
+                    <div className="text-xs text-gray-500 ml-2">+ {decision.patentDetails.IN.expired.length - 2} more</div>
+                  )}
+                </div>
+              )}
+              {decision.patentDetails.IN.blocking.length === 0 && decision.patentDetails.IN.expired.length === 0 && (
+                <div className="text-xs text-gray-500">No patents found</div>
+              )}
+            </div>
+
+            {/* US Patents */}
+            <div className="bg-blue-50 rounded-lg p-3">
+              <div className="text-xs text-blue-600 font-semibold mb-2 flex items-center gap-1">
+                🇺🇸 United States Patents
+              </div>
+              {decision.patentDetails.US.blocking.length > 0 && (
+                <div className="mb-2">
+                  <div className="text-xs font-medium text-red-700 mb-1">🔒 Blocking ({decision.patentDetails.US.blocking.length})</div>
+                  {decision.patentDetails.US.blocking.slice(0, 3).map((p, i) => (
+                    <div key={i} className="text-xs text-gray-700 ml-2">
+                      • <span className="font-mono">{p.patentNumber}</span> expires {new Date(p.expiryDate).toLocaleDateString()} 
+                      <span className="text-gray-500"> ({p.patentType})</span>
+                    </div>
+                  ))}
+                  {decision.patentDetails.US.blocking.length > 3 && (
+                    <div className="text-xs text-gray-500 ml-2">+ {decision.patentDetails.US.blocking.length - 3} more</div>
+                  )}
+                </div>
+              )}
+              {decision.patentDetails.US.expired.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-green-700 mb-1">✅ Expired ({decision.patentDetails.US.expired.length})</div>
+                  {decision.patentDetails.US.expired.slice(0, 2).map((p, i) => (
+                    <div key={i} className="text-xs text-gray-600 ml-2">
+                      • <span className="font-mono">{p.patentNumber}</span> expired {new Date(p.expiryDate).toLocaleDateString()}
+                    </div>
+                  ))}
+                  {decision.patentDetails.US.expired.length > 2 && (
+                    <div className="text-xs text-gray-500 ml-2">+ {decision.patentDetails.US.expired.length - 2} more</div>
+                  )}
+                </div>
+              )}
+              {decision.patentDetails.US.blocking.length === 0 && decision.patentDetails.US.expired.length === 0 && (
+                <div className="text-xs text-gray-500">No patents found</div>
+              )}
+            </div>
+          </div>
+        )}      </div>
       
       {/* Expanded: Country Recommendations */}
       {expanded && (
@@ -236,8 +339,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ report, onSuggestedQuery }
 
       {/* Executive Summary */}
       <div className="bg-white rounded-lg shadow-lg p-6">
-        <h3 className="text-lg font-bold text-gray-800 mb-3">Executive Summary</h3>
-        <p className="text-gray-700 leading-relaxed">{report.summary}</p>
+        <h3 className="text-lg font-bold text-gray-800 mb-4">Executive Summary</h3>
+        <div className="text-gray-700">
+          {renderMarkdown(report.summary)}
+        </div>
       </div>
 
       {/* Market Overview */}

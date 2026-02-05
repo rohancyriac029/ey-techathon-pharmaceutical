@@ -35,6 +35,15 @@ export interface CountryRecommendation {
   conditions?: string[];
 }
 
+export interface PatentInfo {
+  patentNumber: string;
+  patentType: 'COMPOUND' | 'FORMULATION' | 'PROCESS' | 'SECONDARY';
+  isPrimary: boolean;
+  expiryDate: string;
+  status: 'Active' | 'Expired';
+  title?: string;
+}
+
 export interface MoleculeDecision {
   molecule: string;
   brandName?: string;
@@ -48,6 +57,10 @@ export interface MoleculeDecision {
   ftoSummary: string;
   clinicalSummary: string;
   marketSummary: string;
+  patentDetails?: {
+    IN: { blocking: PatentInfo[]; expired: PatentInfo[] };
+    US: { blocking: PatentInfo[]; expired: PatentInfo[] };
+  };
   earliestEntryIN?: string;
   earliestEntryUS?: string;
 }

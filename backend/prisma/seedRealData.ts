@@ -21,7 +21,6 @@ import {
   transformMolecule,
   transformClinicalTrials,
   transformRegulatoryStatus,
-  generateEstimatedPatents,
   generateDiseaseMarketData,
   MoleculeCreate,
   ClinicalTrialCreate,
@@ -29,6 +28,7 @@ import {
   RegulatoryStatusCreate,
   DiseaseMarketCreate,
 } from '../src/services/dataTransformService';
+import { fetchRealPatents } from '../src/services/realPatentFetcher';
 
 const prisma = new PrismaClient();
 
@@ -216,8 +216,34 @@ async function main() {
       const inTrials = transformClinicalTrials(data, 'IN');
       clinicalTrials.push(...usTrials, ...inTrials);
       
-      // Generate patents
-      const moleculePatents = generateEstimatedPatents(data);
+      // Fetch REAL patents from Orange Book (no synthetic generation)
+      const realPatents = await fetchRealPatents(
+        data.molecule.name, 
+        data.molecule.genericName, 
+        data.molecule.innovator
+      );
+      
+      // Convert to PatentCreate format for database seeding
+      const moleculePatents: PatentCreate[] = realPatents.map(p => ({
+        molecule: data.molecule.name,
+        patentNumber: p.patentNumber,
+        filingDate: p.filingDate || new Date('1900-01-01'), // Default if not available
+        expiryDate: p.expiryDate,
+        patentType: p.patentType as any, // Already matches enum
+        isPrimary: p.isPrimary,
+        status: p.status === 'Active' ? 'ACTIVE' : (p.status === 'Expired' ? 'EXPIRED' : 'UNDER_REVIEW'),
+        claims: `Patent covering ${p.patentType.toLowerCase()} aspects`,
+        applicant: p.assignee || data.molecule.innovator,
+        country: p.country,
+        devicePatent: p.devicePatent,
+        litigationHistory: p.litigationHistory,
+        litigationRisk: p.litigationRisk as any,
+        dataQuality: p.dataQuality as any,
+        confidenceLevel: p.confidenceLevel as any,
+        dataSource: p.dataSource,
+        reviewedBy: p.reviewedBy,
+        notes: p.notes,
+      }));
       patents.push(...moleculePatents);
       
       // Transform regulatory status

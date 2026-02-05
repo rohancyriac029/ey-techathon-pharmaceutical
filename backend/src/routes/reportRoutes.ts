@@ -77,6 +77,7 @@ router.get('/:reportId/pdf', async (req, res) => {
   try {
     const report = await prisma.report.findUnique({
       where: { id: req.params.reportId },
+      include: { job: true },
     });
 
     if (!report) {
@@ -87,8 +88,24 @@ router.get('/:reportId/pdf', async (req, res) => {
       return res.status(404).json({ error: 'PDF not found' });
     }
 
+    // Generate meaningful filename from query text
+    let filename = 'pharma-analysis-report';
+    if (report.job?.queryText) {
+      // Extract key terms and sanitize for filename
+      filename = report.job.queryText
+        .toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '') // Remove special chars
+        .replace(/\s+/g, '-')           // Replace spaces with hyphens
+        .substring(0, 50)               // Limit length
+        .replace(/-+$/, '');            // Remove trailing hyphens
+      
+      // Add timestamp for uniqueness
+      const timestamp = new Date().toISOString().split('T')[0];
+      filename = `${filename}-${timestamp}`;
+    }
+
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="report-${report.id}.pdf"`);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}.pdf"`);
     
     const stream = fs.createReadStream(report.pdfPath);
     stream.pipe(res);

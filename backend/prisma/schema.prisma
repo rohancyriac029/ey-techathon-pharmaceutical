@@ -1,24 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-// ============================================
-// CORE WORKFLOW MODELS
-// ============================================
-
 model Job {
   id        String   @id @default(cuid())
   queryText String
-  status    String   // "pending" | "running" | "completed" | "error"
+  status    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   resultId  String?
-  trace     String?  // JSON string for agent execution trace
+  trace     String?
   cacheKey  String?
   report    Report?
 }
@@ -27,199 +23,165 @@ model Report {
   id         String   @id @default(cuid())
   jobId      String   @unique
   summary    String
-  confidence Float    // Legacy field - now stores commercial viability score
+  confidence Float
   pdfPath    String?
-  data       String?  // JSON string for full report data
+  data       String?
   createdAt  DateTime @default(now())
   job        Job      @relation(fields: [jobId], references: [id])
 }
 
-// ============================================
-// MOLECULE MASTER DATA (NEW)
-// Curated list of 8 strategic molecules
-// ============================================
-
 model Molecule {
   id               String   @id @default(cuid())
-  name             String   @unique  // e.g., "Semaglutide"
-  genericName      String?           // e.g., "semaglutide"
-  brandName        String?           // e.g., "Ozempic/Wegovy"
-  indication       String            // e.g., "Type 2 Diabetes"
-  modality         String            // "small-molecule" | "mAb" | "biosimilar" | "peptide"
-  innovatorCompany String            // e.g., "Novo Nordisk"
-  launchYear       Int?              // Year of first approval
+  name             String   @unique
+  genericName      String?
+  brandName        String?
+  indication       String
+  modality         String
+  innovatorCompany String
+  launchYear       Int?
   createdAt        DateTime @default(now())
 }
 
-// ============================================
-// PATENT DATA (REFACTORED)
-// Country-specific with patent types
-// ============================================
-
 model Patent {
-  id           String   @id @default(cuid())
-  molecule     String            // FK to Molecule.name
-  country      String            // "IN" | "US" only
-  patentNumber String            // e.g., "US7,919,598"
-  patentType   String            // "COMPOUND" | "FORMULATION" | "PROCESS" | "SECONDARY"
-  isPrimary    Boolean @default(false)  // True for compound/NCE patents
-  status       String            // "Active" | "Expired"
-  filingDate   DateTime?
-  expiryDate   DateTime
-  title        String?           // Patent title
-  assignee     String?           // Patent holder
-  createdAt    DateTime @default(now())
+  id                String    @id @default(cuid())
+  molecule          String
+  country           String
+  patentNumber      String
+  patentType        String
+  isPrimary         Boolean   @default(false)
+  status            String
+  filingDate        DateTime?
+  expiryDate        DateTime
+  title             String?
+  assignee          String?
+  devicePatent      Boolean   @default(false)
+  litigationHistory String?
+  litigationRisk    String?
+  dataQuality       String    @default("CURATED")
+  confidenceLevel   String    @default("MEDIUM")
+  dataSource        String?
+  lastVerified      DateTime?
+  reviewedBy        String?
+  notes             String?
+  createdAt         DateTime  @default(now())
 }
 
-// ============================================
-// DISEASE MARKET DATA (NEW)
-// Epidemiology + market sizing per country
-// ============================================
-
 model DiseaseMarket {
-  id                      String   @id @default(cuid())
-  disease                 String   // "COPD" | "Type 2 Diabetes" | "NSCLC"
-  country                 String   // "IN" | "US"
-  year                    Int      // Reference year for data
-  prevalenceMillions      Float    // Number of patients (millions)
-  incidenceMillions       Float    // New cases per year (millions)
-  treatedRatePercent      Float    // % of patients receiving treatment
-  avgAnnualTherapyCostUSD Float    // Average annual cost per patient
-  marketSizeUSD           Float?   // Calculated: prevalence * treatedRate * cost
-  dataSource              String?  // e.g., "WHO 2024", "IQVIA"
-  createdAt               DateTime @default(now())
+  id                      String    @id @default(cuid())
+  disease                 String
+  country                 String
+  year                    Int
+  prevalenceMillions      Float
+  incidenceMillions       Float
+  treatedRatePercent      Float
+  avgAnnualTherapyCostUSD Float
+  marketSizeUSD           Float?
+  dataSource              String?
+  dataQuality             String    @default("CURATED")
+  confidenceLevel         String    @default("MEDIUM")
+  confidenceBands         String?
+  assumptions             String?
+  lastVerified            DateTime?
+  createdAt               DateTime  @default(now())
 
   @@unique([disease, country, year])
 }
 
-// ============================================
-// CLINICAL TRIAL DATA (REFACTORED)
-// More structured for regulatory assessment
-// ============================================
-
 model ClinicalTrial {
-  id             String   @id @default(cuid())
-  molecule       String            // FK to Molecule.name
-  indication     String            // Disease being treated
-  phase          String            // "Phase I" | "Phase II" | "Phase III" | "Phase IV"
-  status         String   @default("Completed")  // "Recruiting" | "Completed" | "Terminated"
-  country        String            // "IN" | "US"
-  sponsor        String
-  trialId        String?           // NCT number or CTRI number
-  startDate      DateTime?
-  completionDate DateTime?
-  primaryEndpoint String?          // Key efficacy measure
-  outcome        String?           // "Positive" | "Negative" | "Mixed" | "Ongoing"
-  citations      String
-  createdAt      DateTime @default(now())
+  id              String    @id @default(cuid())
+  molecule        String
+  indication      String
+  phase           String
+  status          String    @default("Completed")
+  country         String
+  sponsor         String
+  trialId         String?
+  startDate       DateTime?
+  completionDate  DateTime?
+  primaryEndpoint String?
+  outcome         String?
+  citations       String
+  outcomeVerified Boolean   @default(false)
+  outcomeSource   String?
+  outcomeNotes    String?
+  dataQuality     String    @default("VERIFIED")
+  confidenceLevel String    @default("HIGH")
+  lastVerified    DateTime?
+  createdAt       DateTime  @default(now())
 }
 
-// ============================================
-// REGULATORY STATUS (NEW)
-// Track approval status per country
-// ============================================
-
 model RegulatoryStatus {
-  id              String   @id @default(cuid())
-  molecule        String            // FK to Molecule.name
-  country         String            // "IN" | "US"
-  status          String            // "Approved" | "Under Review" | "Not Filed" | "Rejected"
-  approvalDate    DateTime?
-  approvalType    String?           // "NDA" | "ANDA" | "BLA" | "505(b)(2)"
-  referenceProduct String?          // For generics/biosimilars
-  createdAt       DateTime @default(now())
+  id               String    @id @default(cuid())
+  molecule         String
+  country          String
+  status           String
+  approvalDate     DateTime?
+  approvalType     String?
+  referenceProduct String?
+  createdAt        DateTime  @default(now())
 
   @@unique([molecule, country])
 }
 
-// ============================================
-// DRUG PRICING DATA (NEW)
-// Real pricing data from CMS Medicare Part D (US) and NPPA (India)
-// ============================================
-
 model DrugPricing {
-  id                String   @id @default(cuid())
-  molecule          String            // FK to Molecule.name
-  country           String            // "IN" | "US"
-  year              Int               // Data year (e.g., 2023)
-  
-  // US Medicare Part D data (from CMS)
-  totalSpendingUSD  Float?            // Total Medicare spending
-  totalClaims       Int?              // Number of claims
-  costPerClaimUSD   Float?            // Average cost per claim
-  beneficiaries     Int?              // Number of unique patients
-  
-  // Generic pricing data
-  brandPriceUSD     Float?            // Reference/brand price per unit
-  genericPriceUSD   Float?            // Average generic price per unit
-  priceErosionPct   Float?            // % price decline from brand
-  
-  // India specific (from NPPA/market data)
-  mrpINR            Float?            // Maximum retail price per unit
-  ceilingPriceINR   Float?            // NPPA ceiling price (if scheduled)
-  
-  dataSource        String            // "CMS Medicare Part D 2023", "NPPA 2024"
-  dataConfidence    String  @default("MEDIUM")  // "HIGH" | "MEDIUM" | "LOW"
-  createdAt         DateTime @default(now())
+  id               String    @id @default(cuid())
+  molecule         String
+  country          String
+  year             Int
+  totalSpendingUSD Float?
+  totalClaims      Int?
+  costPerClaimUSD  Float?
+  beneficiaries    Int?
+  brandPriceUSD    Float?
+  genericPriceUSD  Float?
+  priceErosionPct  Float?
+  mrpINR           Float?
+  ceilingPriceINR  Float?
+  dataSource       String
+  dataConfidence   String    @default("MEDIUM")
+  dataQuality      String    @default("CURATED")
+  confidenceLevel  String    @default("MEDIUM")
+  confidenceBands  String?
+  assumptions      String?
+  lastVerified     DateTime?
+  createdAt        DateTime  @default(now())
 
   @@unique([molecule, country, year])
 }
-
-// ============================================
-// GENERIC COMPETITION DATA (NEW)
-// Real competition data from FDA Orange Book and CDSCO
-// ============================================
 
 model GenericCompetition {
-  id                    String   @id @default(cuid())
-  molecule              String            // FK to Molecule.name
-  country               String            // "IN" | "US"
-  year                  Int               // Data year
-  
-  // Competition metrics
-  genericApprovals      Int               // Number of approved ANDAs/generics
-  biosimilarApprovals   Int     @default(0)  // Number of biosimilars (for biologics)
-  activeManufacturers   Int               // Currently marketing the product
-  
-  // Key competitors (JSON array of company names)
-  topCompetitors        String?           // JSON: ["Teva", "Mylan", "Sun Pharma"]
-  firstGenericDate      DateTime?         // Date of first generic entry
-  
-  // Market dynamics
-  brandMarketSharePct   Float?            // Brand's remaining market share %
-  genericPenetrationPct Float?            // % of market taken by generics
-  avgGenericPriceVsBrandPct Float?        // Generic price as % of brand
-  
-  // Competitive intensity scoring
-  competitionIntensity  String  @default("LOW")  // "LOW" | "MEDIUM" | "HIGH"
-  
-  dataSource            String            // "FDA Orange Book 2024", "CDSCO"
-  createdAt             DateTime @default(now())
+  id                        String    @id @default(cuid())
+  molecule                  String
+  country                   String
+  year                      Int
+  genericApprovals          Int
+  biosimilarApprovals       Int       @default(0)
+  activeManufacturers       Int
+  topCompetitors            String?
+  firstGenericDate          DateTime?
+  brandMarketSharePct       Float?
+  genericPenetrationPct     Float?
+  avgGenericPriceVsBrandPct Float?
+  competitionIntensity      String    @default("LOW")
+  dataSource                String
+  dataQuality               String    @default("CURATED")
+  confidenceLevel           String    @default("MEDIUM")
+  assumptions               String?
+  lastVerified              DateTime?
+  createdAt                 DateTime  @default(now())
 
   @@unique([molecule, country, year])
 }
 
-// ============================================
-// MARKET GROWTH DATA (NEW)
-// Historical and projected market growth rates
-// ============================================
-
 model MarketGrowth {
-  id                String   @id @default(cuid())
-  disease           String            // "COPD" | "Type 2 Diabetes" | "NSCLC"
-  country           String            // "IN" | "US"
-  year              Int               // Reference year
-  
-  // Historical growth
-  cagr5YearHistoric Float?            // 5-year historical CAGR %
-  
-  // Projected growth
-  cagr5YearProjected Float?           // 5-year projected CAGR %
-  
-  // Market dynamics
-  genericErosionRate Float?           // Annual price erosion rate for generics %
-  
-  dataSource         String           // "IQVIA 2024", "Evaluate Pharma"
+  id                 String   @id @default(cuid())
+  disease            String
+  country            String
+  year               Int
+  cagr5YearHistoric  Float?
+  cagr5YearProjected Float?
+  genericErosionRate Float?
+  dataSource         String
   createdAt          DateTime @default(now())
 
   @@unique([disease, country, year])

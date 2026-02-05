@@ -200,6 +200,18 @@ export async function runCommercialDecisionAgent(
         `IN: $${(market.estimatedRevenueUSD.IN / 1_000_000).toFixed(0)}M potential. ` +
         `US: $${(market.estimatedRevenueUSD.US / 1_000_000).toFixed(0)}M potential.`;
 
+      // Extract patent details for transparency
+      const patentDetails = {
+        IN: {
+          blocking: fto.byCountry.find(c => c.country === 'IN')?.blockingPatents || [],
+          expired: fto.byCountry.find(c => c.country === 'IN')?.expiredPatents || [],
+        },
+        US: {
+          blocking: fto.byCountry.find(c => c.country === 'US')?.blockingPatents || [],
+          expired: fto.byCountry.find(c => c.country === 'US')?.expiredPatents || [],
+        },
+      };
+
       decisions.push({
         molecule: fto.molecule,
         brandName: molecule?.brandName || undefined,
@@ -213,6 +225,7 @@ export async function runCommercialDecisionAgent(
         ftoSummary,
         clinicalSummary,
         marketSummary,
+        patentDetails,
         earliestEntryIN: fto.byCountry.find(c => c.country === 'IN')?.earliestGenericEntry,
         earliestEntryUS: fto.byCountry.find(c => c.country === 'US')?.earliestGenericEntry,
       });

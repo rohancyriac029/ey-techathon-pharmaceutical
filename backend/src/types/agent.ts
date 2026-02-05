@@ -8,6 +8,31 @@ export interface AgentTraceEvent {
 }
 
 // ============================================
+// DATA QUALITY DISCLAIMER SECTION
+// Required for all analysis outputs to disclose data sources and limitations
+// ============================================
+
+export interface DisclaimerSection {
+  patentAnalysis: string;          // "Device patents may extend beyond compound expiry. Legal review required."
+  marketSizing: string;             // "Market estimates based on CMS Medicare Part D data (US) and limited India sources. ±50% confidence bands."
+  ftoRisk: string;                  // "FTO assessment is preliminary. Litigation history incomplete. Requires legal counsel."
+  dataQuality: {
+    patents: 'VERIFIED' | 'CURATED' | 'ESTIMATED' | 'INCOMPLETE';
+    clinicalTrials: 'VERIFIED' | 'CURATED' | 'ESTIMATED' | 'INCOMPLETE';
+    marketData: 'VERIFIED' | 'CURATED' | 'ESTIMATED' | 'INCOMPLETE';
+    pricing: 'VERIFIED' | 'CURATED' | 'ESTIMATED' | 'INCOMPLETE';
+  };
+  dataSources: {
+    patents: string;                // "FDA Orange Book (338,834 records)"
+    clinicalTrials: string;         // "ClinicalTrials.gov API"
+    marketData: string;             // "CMS Medicare Part D, manual India estimates"
+    pricing: string;                // "NPPA ceiling prices (India), OpenFDA (US)"
+  };
+  lastUpdated: string;              // ISO date string
+  reviewedBy?: string;              // Optional: name of person who reviewed curated data
+}
+
+// ============================================
 // COMMERCIAL DECISION TYPES (NEW)
 // These drive business decisions, not just analytics
 // ============================================
@@ -195,6 +220,12 @@ export interface MoleculeDecision {
   clinicalSummary: string;        // "Phase III completed, approved in both markets"
   marketSummary: string;          // "$8.2B market in India, 45% treated"
   
+  // Patent details for transparency
+  patentDetails?: {
+    IN: { blocking: PatentInfo[]; expired: PatentInfo[] };
+    US: { blocking: PatentInfo[]; expired: PatentInfo[] };
+  };
+  
   // Key dates
   earliestEntryIN?: string;
   earliestEntryUS?: string;
@@ -209,6 +240,7 @@ export interface CommercialDecisionAgentResult {
     waitOpportunities: number;
     dropRecommendations: number;
   };
+  disclaimers: DisclaimerSection;   // Required: disclose data quality and limitations
 }
 
 // ============================================

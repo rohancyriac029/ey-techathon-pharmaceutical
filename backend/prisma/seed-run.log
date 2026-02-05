@@ -1,0 +1,2585 @@
+═══════════════════════════════════════════════════════════════
+   REAL DATA SEED - Pharmaceutical Decision Platform
+   Fetching data from ClinicalTrials.gov and OpenFDA
+═══════════════════════════════════════════════════════════════
+
+📡 STEP 1: Fetching data from external APIs...
+
+🚀 Starting data fetch from external APIs...
+
+Target molecules: Semaglutide, Sitagliptin, Empagliflozin, Metformin, Tiotropium, Umeclidinium, Indacaterol, Roflumilast, Osimertinib, Pembrolizumab, Erlotinib, Gefitinib, Adalimumab, Etanercept, Tofacitinib, Baricitinib, Atorvastatin, Rosuvastatin, Ezetimibe, Clopidogrel, Lisinopril, Amlodipine, Losartan, Valsartan
+
+
+📦 Fetching data for Semaglutide (Ozempic)...
+  Fetching FDA data for Ozempic...
+  Fetching trials for semaglutide...
+  Found 10 trials for semaglutide
+  Fetching trials for semaglutide...
+  Found 10 trials for semaglutide
+  ✅ Semaglutide: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Sitagliptin (Januvia)...
+  Fetching FDA data for Januvia...
+  Fetching trials for sitagliptin...
+  Found 10 trials for sitagliptin
+  Fetching trials for sitagliptin...
+  Found 10 trials for sitagliptin
+  ✅ Sitagliptin: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Empagliflozin (Jardiance)...
+  Fetching FDA data for Jardiance...
+  Fetching trials for empagliflozin...
+  Found 10 trials for empagliflozin
+  Fetching trials for empagliflozin...
+  Found 10 trials for empagliflozin
+  ✅ Empagliflozin: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Metformin (Glucophage)...
+  Fetching FDA data for Glucophage...
+  Fetching trials for metformin...
+  Found 10 trials for metformin
+  Fetching trials for metformin...
+  Found 10 trials for metformin
+  ✅ Metformin: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Tiotropium (Spiriva)...
+  Fetching FDA data for Spiriva...
+  Fetching trials for tiotropium...
+  Found 10 trials for tiotropium
+  Fetching trials for tiotropium...
+  Found 10 trials for tiotropium
+  ✅ Tiotropium: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Umeclidinium (Incruse Ellipta)...
+  Fetching FDA data for Incruse Ellipta...
+  Fetching trials for umeclidinium...
+  Found 10 trials for umeclidinium
+  Fetching trials for umeclidinium...
+  Found 1 trials for umeclidinium
+  ✅ Umeclidinium: FDA=Yes, US Trials=10, India Trials=1
+
+📦 Fetching data for Indacaterol (Arcapta)...
+  Fetching FDA data for Arcapta...
+  Fetching trials for indacaterol...
+  Found 10 trials for indacaterol
+  Fetching trials for indacaterol...
+  Found 10 trials for indacaterol
+  ✅ Indacaterol: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Roflumilast (Daliresp)...
+  Fetching FDA data for Daliresp...
+  Fetching trials for roflumilast...
+  Found 10 trials for roflumilast
+  Fetching trials for roflumilast...
+  Found 2 trials for roflumilast
+  ✅ Roflumilast: FDA=Yes, US Trials=10, India Trials=2
+
+📦 Fetching data for Osimertinib (Tagrisso)...
+  Fetching FDA data for Tagrisso...
+  Fetching trials for osimertinib...
+  Found 10 trials for osimertinib
+  Fetching trials for osimertinib...
+  Found 10 trials for osimertinib
+  ✅ Osimertinib: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Pembrolizumab (Keytruda)...
+  Fetching FDA data for Keytruda...
+  Fetching trials for pembrolizumab...
+  Found 10 trials for pembrolizumab
+  Fetching trials for pembrolizumab...
+  Found 10 trials for pembrolizumab
+  ✅ Pembrolizumab: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Erlotinib (Tarceva)...
+  Fetching FDA data for Tarceva...
+  Fetching trials for erlotinib...
+  Found 10 trials for erlotinib
+  Fetching trials for erlotinib...
+  Found 10 trials for erlotinib
+  ✅ Erlotinib: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Gefitinib (Iressa)...
+  Fetching FDA data for Iressa...
+  Fetching trials for gefitinib...
+  Found 10 trials for gefitinib
+  Fetching trials for gefitinib...
+  Found 5 trials for gefitinib
+  ✅ Gefitinib: FDA=Yes, US Trials=10, India Trials=5
+
+📦 Fetching data for Adalimumab (Humira)...
+  Fetching FDA data for Humira...
+  Fetching trials for adalimumab...
+  Found 10 trials for adalimumab
+  Fetching trials for adalimumab...
+  Found 4 trials for adalimumab
+  ✅ Adalimumab: FDA=Yes, US Trials=10, India Trials=4
+
+📦 Fetching data for Etanercept (Enbrel)...
+  Fetching FDA data for Enbrel...
+  Fetching trials for etanercept...
+  Found 10 trials for etanercept
+  Fetching trials for etanercept...
+  Found 5 trials for etanercept
+  ✅ Etanercept: FDA=Yes, US Trials=10, India Trials=5
+
+📦 Fetching data for Tofacitinib (Xeljanz)...
+  Fetching FDA data for Xeljanz...
+  Fetching trials for tofacitinib...
+  Found 10 trials for tofacitinib
+  Fetching trials for tofacitinib...
+  Found 10 trials for tofacitinib
+  ✅ Tofacitinib: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Baricitinib (Olumiant)...
+  Fetching FDA data for Olumiant...
+  Fetching trials for baricitinib...
+  Found 10 trials for baricitinib
+  Fetching trials for baricitinib...
+  Found 10 trials for baricitinib
+  ✅ Baricitinib: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Atorvastatin (Lipitor)...
+  Fetching FDA data for Lipitor...
+  Fetching trials for atorvastatin...
+  Found 10 trials for atorvastatin
+  Fetching trials for atorvastatin...
+  Found 10 trials for atorvastatin
+  ✅ Atorvastatin: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Rosuvastatin (Crestor)...
+  Fetching FDA data for Crestor...
+  Fetching trials for rosuvastatin...
+  Found 10 trials for rosuvastatin
+  Fetching trials for rosuvastatin...
+  Found 10 trials for rosuvastatin
+  ✅ Rosuvastatin: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Ezetimibe (Zetia)...
+  Fetching FDA data for Zetia...
+  Fetching trials for ezetimibe...
+  Found 10 trials for ezetimibe
+  Fetching trials for ezetimibe...
+  Found 6 trials for ezetimibe
+  ✅ Ezetimibe: FDA=Yes, US Trials=10, India Trials=6
+
+📦 Fetching data for Clopidogrel (Plavix)...
+  Fetching FDA data for Plavix...
+  Fetching trials for clopidogrel...
+  Found 10 trials for clopidogrel
+  Fetching trials for clopidogrel...
+  Found 10 trials for clopidogrel
+  ✅ Clopidogrel: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Lisinopril (Zestril)...
+  Fetching FDA data for Zestril...
+  Fetching trials for lisinopril...
+  Found 10 trials for lisinopril
+  Fetching trials for lisinopril...
+  Found 7 trials for lisinopril
+  ✅ Lisinopril: FDA=Yes, US Trials=10, India Trials=7
+
+📦 Fetching data for Amlodipine (Norvasc)...
+  Fetching FDA data for Norvasc...
+  Fetching trials for amlodipine...
+  Found 10 trials for amlodipine
+  Fetching trials for amlodipine...
+  Found 10 trials for amlodipine
+  ✅ Amlodipine: FDA=Yes, US Trials=10, India Trials=10
+
+📦 Fetching data for Losartan (Cozaar)...
+  Fetching FDA data for Cozaar...
+  Fetching trials for losartan...
+  Found 10 trials for losartan
+  Fetching trials for losartan...
+  Found 6 trials for losartan
+  ✅ Losartan: FDA=Yes, US Trials=10, India Trials=6
+
+📦 Fetching data for Valsartan (Diovan)...
+  Fetching FDA data for Diovan...
+  Fetching trials for valsartan...
+  Found 10 trials for valsartan
+  Fetching trials for valsartan...
+  Found 10 trials for valsartan
+  ✅ Valsartan: FDA=Yes, US Trials=10, India Trials=10
+
+✅ Completed fetching data for 24 molecules
+
+✅ STEP 2: Validating fetched data...
+
+   Valid molecules: 24/24
+
+🔄 STEP 3: Transforming data for database...
+
+
+[Real Patents] Fetching for Semaglutide...
+[Orange Book] Loading data for Semaglutide...
+[Orange Book] Found 171 patents for SEMAGLUTIDE
+[Real Patents] ✅ 171 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 2 Indian patents for Semaglutide
+[Real Patents] ✅ 2 Indian patents
+[Real Patents] 🎯 Total: 173 patents (US: 171, IN: 2)
+
+[Real Patents] Fetching for Sitagliptin...
+[Orange Book] Loading data for Sitagliptin...
+[Orange Book] Found 47 patents for SITAGLIPTIN
+[Real Patents] ✅ 47 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 2 Indian patents for Sitagliptin
+[Real Patents] ✅ 2 Indian patents
+[Real Patents] 🎯 Total: 49 patents (US: 47, IN: 2)
+
+[Real Patents] Fetching for Empagliflozin...
+[Orange Book] Loading data for Empagliflozin...
+[Orange Book] Found 483 patents for EMPAGLIFLOZIN
+[Real Patents] ✅ 483 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Empagliflozin
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 484 patents (US: 483, IN: 1)
+
+[Real Patents] Fetching for Metformin...
+[Orange Book] Loading data for Metformin...
+[Orange Book] Found 712 patents for METFORMIN
+[Real Patents] ✅ 712 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Metformin
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 713 patents (US: 712, IN: 1)
+
+[Real Patents] Fetching for Tiotropium...
+[Orange Book] Loading data for Tiotropium...
+[Orange Book] Found 25 patents for TIOTROPIUM
+[Real Patents] ✅ 25 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 2 Indian patents for Tiotropium
+[Real Patents] ✅ 2 Indian patents
+[Real Patents] 🎯 Total: 27 patents (US: 25, IN: 2)
+
+[Real Patents] Fetching for Umeclidinium...
+[Orange Book] Loading data for Umeclidinium...
+[Orange Book] Found 42 patents for UMECLIDINIUM
+[Real Patents] ✅ 42 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Umeclidinium
+[Real Patents] 🎯 Total: 42 patents (US: 42, IN: 0)
+
+[Real Patents] Fetching for Indacaterol...
+[Orange Book] Loading data for Indacaterol...
+[Orange Book] Found 5 patents for INDACATEROL
+[Real Patents] ✅ 5 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Indacaterol
+[Real Patents] 🎯 Total: 5 patents (US: 5, IN: 0)
+
+[Real Patents] Fetching for Roflumilast...
+[Orange Book] Loading data for Roflumilast...
+[Orange Book] Found 76 patents for ROFLUMILAST
+[Real Patents] ✅ 76 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Roflumilast
+[Real Patents] 🎯 Total: 76 patents (US: 76, IN: 0)
+
+[Real Patents] Fetching for Osimertinib...
+[Orange Book] Loading data for Osimertinib...
+[Orange Book] Found 34 patents for OSIMERTINIB
+[Real Patents] ✅ 34 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Osimertinib
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 35 patents (US: 34, IN: 1)
+
+[Real Patents] Fetching for Pembrolizumab...
+[Orange Book] Loading data for Pembrolizumab...
+[Orange Book] Found 0 patents for PEMBROLIZUMAB
+[USPTO] Searching Pembrolizumab by Merck...
+[USPTO] Error: AxiosError: Request failed with status code 410
+    at settle (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/adapters/http.js:798:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async fetchUSPTOPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:205:22)
+    at async fetchRealPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:350:19)
+    at async main (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/prisma/seedRealData.ts:220:27) {
+  isAxiosError: true,
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 10000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.13.4',
+      'Content-Length': '198',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.patentsview.org/patents/query',
+    data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Pembrolizumab"}},{"assignee_organization":"Merck"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+    allowAbsoluteUrls: true
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '198',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.patentsview.org',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.patentsview.org',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      timeout: 10000,
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 32391,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: 10000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 123423,
+        _onTimeout: [Function: bound ],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 32399,
+        [Symbol(triggerId)]: 32394
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /patents/query HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.13.4\r\n' +
+      'Content-Length: 198\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.patentsview.org\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/patents/query',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 410,
+      statusMessage: 'Gone',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.patentsview.org/patents/query',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 10,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.patentsview.org',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 198,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.patentsview.org/patents/query',
+      _timeout: null,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 410,
+    statusText: 'Gone',
+    headers: Object [AxiosHeaders] {
+      server: 'awselb/2.0',
+      date: 'Thu, 05 Feb 2026 12:42:03 GMT',
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': '39',
+      connection: 'close'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.patentsview.org/patents/query',
+      data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Pembrolizumab"}},{"assignee_organization":"Merck"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+      allowAbsoluteUrls: true
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '198',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /patents/query HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.13.4\r\n' +
+        'Content-Length: 198\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.patentsview.org\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/patents/query',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.patentsview.org',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: true, reason: 'discontinued' }
+  },
+  status: 410
+}
+[Curated] Found 0 curated patents for Pembrolizumab
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Pembrolizumab
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 1 patents (US: 0, IN: 1)
+
+[Real Patents] Fetching for Erlotinib...
+[Orange Book] Loading data for Erlotinib...
+[Orange Book] Found 0 patents for ERLOTINIB
+[USPTO] Searching Erlotinib by Roche...
+[USPTO] Error: AxiosError: Request failed with status code 410
+    at settle (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/adapters/http.js:798:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async fetchUSPTOPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:205:22)
+    at async fetchRealPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:350:19)
+    at async main (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/prisma/seedRealData.ts:220:27) {
+  isAxiosError: true,
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 10000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.13.4',
+      'Content-Length': '194',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.patentsview.org/patents/query',
+    data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Erlotinib"}},{"assignee_organization":"Roche"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+    allowAbsoluteUrls: true
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '194',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.patentsview.org',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.patentsview.org',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      timeout: 10000,
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 32415,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: 10000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 125477,
+        _onTimeout: [Function: bound ],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 32423,
+        [Symbol(triggerId)]: 32418
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /patents/query HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.13.4\r\n' +
+      'Content-Length: 194\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.patentsview.org\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/patents/query',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 410,
+      statusMessage: 'Gone',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.patentsview.org/patents/query',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 10,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.patentsview.org',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 194,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.patentsview.org/patents/query',
+      _timeout: null,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 410,
+    statusText: 'Gone',
+    headers: Object [AxiosHeaders] {
+      server: 'awselb/2.0',
+      date: 'Thu, 05 Feb 2026 12:42:05 GMT',
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': '39',
+      connection: 'close'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.patentsview.org/patents/query',
+      data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Erlotinib"}},{"assignee_organization":"Roche"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+      allowAbsoluteUrls: true
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '194',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /patents/query HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.13.4\r\n' +
+        'Content-Length: 194\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.patentsview.org\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/patents/query',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.patentsview.org',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: true, reason: 'discontinued' }
+  },
+  status: 410
+}
+[Curated] Found 0 curated patents for Erlotinib
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Erlotinib
+[Real Patents] ⚠️ NO DATA FOUND for Erlotinib
+
+[Real Patents] Fetching for Gefitinib...
+[Orange Book] Loading data for Gefitinib...
+[Orange Book] Found 0 patents for GEFITINIB
+[USPTO] Searching Gefitinib by AstraZeneca...
+[USPTO] Error: AxiosError: Request failed with status code 410
+    at settle (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/adapters/http.js:798:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async fetchUSPTOPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:205:22)
+    at async fetchRealPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:350:19)
+    at async main (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/prisma/seedRealData.ts:220:27) {
+  isAxiosError: true,
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 10000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.13.4',
+      'Content-Length': '200',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.patentsview.org/patents/query',
+    data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Gefitinib"}},{"assignee_organization":"AstraZeneca"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+    allowAbsoluteUrls: true
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '200',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.patentsview.org',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.patentsview.org',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      timeout: 10000,
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 32442,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: 10000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 128027,
+        _onTimeout: [Function: bound ],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 32450,
+        [Symbol(triggerId)]: 32445
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /patents/query HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.13.4\r\n' +
+      'Content-Length: 200\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.patentsview.org\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/patents/query',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 410,
+      statusMessage: 'Gone',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.patentsview.org/patents/query',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 10,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.patentsview.org',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 200,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.patentsview.org/patents/query',
+      _timeout: null,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 410,
+    statusText: 'Gone',
+    headers: Object [AxiosHeaders] {
+      server: 'awselb/2.0',
+      date: 'Thu, 05 Feb 2026 12:42:08 GMT',
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': '39',
+      connection: 'close'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.patentsview.org/patents/query',
+      data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Gefitinib"}},{"assignee_organization":"AstraZeneca"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+      allowAbsoluteUrls: true
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '200',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /patents/query HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.13.4\r\n' +
+        'Content-Length: 200\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.patentsview.org\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/patents/query',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.patentsview.org',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: true, reason: 'discontinued' }
+  },
+  status: 410
+}
+[Curated] Found 0 curated patents for Gefitinib
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Gefitinib
+[Real Patents] ⚠️ NO DATA FOUND for Gefitinib
+
+[Real Patents] Fetching for Adalimumab...
+[Orange Book] Loading data for Adalimumab...
+[Orange Book] Found 0 patents for ADALIMUMAB
+[USPTO] Searching Adalimumab by AbbVie...
+[USPTO] Error: AxiosError: Request failed with status code 410
+    at settle (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/adapters/http.js:798:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async fetchUSPTOPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:205:22)
+    at async fetchRealPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:350:19)
+    at async main (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/prisma/seedRealData.ts:220:27) {
+  isAxiosError: true,
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 10000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.13.4',
+      'Content-Length': '196',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.patentsview.org/patents/query',
+    data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Adalimumab"}},{"assignee_organization":"AbbVie"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+    allowAbsoluteUrls: true
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '196',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.patentsview.org',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.patentsview.org',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      timeout: 10000,
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 32469,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: 10000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 129965,
+        _onTimeout: [Function: bound ],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 32477,
+        [Symbol(triggerId)]: 32472
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /patents/query HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.13.4\r\n' +
+      'Content-Length: 196\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.patentsview.org\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/patents/query',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 410,
+      statusMessage: 'Gone',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.patentsview.org/patents/query',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 10,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.patentsview.org',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 196,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.patentsview.org/patents/query',
+      _timeout: null,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 410,
+    statusText: 'Gone',
+    headers: Object [AxiosHeaders] {
+      server: 'awselb/2.0',
+      date: 'Thu, 05 Feb 2026 12:42:09 GMT',
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': '39',
+      connection: 'close'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.patentsview.org/patents/query',
+      data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Adalimumab"}},{"assignee_organization":"AbbVie"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+      allowAbsoluteUrls: true
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '196',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /patents/query HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.13.4\r\n' +
+        'Content-Length: 196\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.patentsview.org\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/patents/query',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.patentsview.org',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: true, reason: 'discontinued' }
+  },
+  status: 410
+}
+[Curated] Found 0 curated patents for Adalimumab
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Adalimumab
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 1 patents (US: 0, IN: 1)
+
+[Real Patents] Fetching for Etanercept...
+[Orange Book] Loading data for Etanercept...
+[Orange Book] Found 0 patents for ETANERCEPT
+[USPTO] Searching Etanercept by Amgen...
+[USPTO] Error: AxiosError: Request failed with status code 410
+    at settle (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/adapters/http.js:798:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async fetchUSPTOPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:205:22)
+    at async fetchRealPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:350:19)
+    at async main (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/prisma/seedRealData.ts:220:27) {
+  isAxiosError: true,
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 10000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.13.4',
+      'Content-Length': '195',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.patentsview.org/patents/query',
+    data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Etanercept"}},{"assignee_organization":"Amgen"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+    allowAbsoluteUrls: true
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '195',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.patentsview.org',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.patentsview.org',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      timeout: 10000,
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 32496,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: 10000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 131580,
+        _onTimeout: [Function: bound ],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 32504,
+        [Symbol(triggerId)]: 32499
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /patents/query HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.13.4\r\n' +
+      'Content-Length: 195\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.patentsview.org\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/patents/query',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 410,
+      statusMessage: 'Gone',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.patentsview.org/patents/query',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 10,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.patentsview.org',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 195,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.patentsview.org/patents/query',
+      _timeout: null,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 410,
+    statusText: 'Gone',
+    headers: Object [AxiosHeaders] {
+      server: 'awselb/2.0',
+      date: 'Thu, 05 Feb 2026 12:42:11 GMT',
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': '39',
+      connection: 'close'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.patentsview.org/patents/query',
+      data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Etanercept"}},{"assignee_organization":"Amgen"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+      allowAbsoluteUrls: true
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '195',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /patents/query HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.13.4\r\n' +
+        'Content-Length: 195\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.patentsview.org\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/patents/query',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.patentsview.org',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: true, reason: 'discontinued' }
+  },
+  status: 410
+}
+[Curated] Found 0 curated patents for Etanercept
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Etanercept
+[Real Patents] ⚠️ NO DATA FOUND for Etanercept
+
+[Real Patents] Fetching for Tofacitinib...
+[Orange Book] Loading data for Tofacitinib...
+[Orange Book] Found 24 patents for TOFACITINIB
+[Real Patents] ✅ 24 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Tofacitinib
+[Real Patents] 🎯 Total: 24 patents (US: 24, IN: 0)
+
+[Real Patents] Fetching for Baricitinib...
+[Orange Book] Loading data for Baricitinib...
+[Orange Book] Found 17 patents for BARICITINIB
+[Real Patents] ✅ 17 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Baricitinib
+[Real Patents] 🎯 Total: 17 patents (US: 17, IN: 0)
+
+[Real Patents] Fetching for Atorvastatin...
+[Orange Book] Loading data for Atorvastatin...
+[Orange Book] Found 6 patents for ATORVASTATIN
+[Real Patents] ✅ 6 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Atorvastatin
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 7 patents (US: 6, IN: 1)
+
+[Real Patents] Fetching for Rosuvastatin...
+[Orange Book] Loading data for Rosuvastatin...
+[Orange Book] Found 12 patents for ROSUVASTATIN
+[Real Patents] ✅ 12 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Rosuvastatin
+[Real Patents] 🎯 Total: 12 patents (US: 12, IN: 0)
+
+[Real Patents] Fetching for Ezetimibe...
+[Orange Book] Loading data for Ezetimibe...
+[Orange Book] Found 21 patents for EZETIMIBE
+[Real Patents] ✅ 21 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Ezetimibe
+[Real Patents] 🎯 Total: 21 patents (US: 21, IN: 0)
+
+[Real Patents] Fetching for Clopidogrel...
+[Orange Book] Loading data for Clopidogrel...
+[Orange Book] Found 0 patents for CLOPIDOGREL
+[USPTO] Searching Clopidogrel by Sanofi...
+[USPTO] Error: AxiosError: Request failed with status code 410
+    at settle (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/adapters/http.js:798:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async fetchUSPTOPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:205:22)
+    at async fetchRealPatents (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/src/services/realPatentFetcher.ts:350:19)
+    at async main (/Users/sanidhyakumar/Documents/ey-techathon-pharmaceutical/backend/prisma/seedRealData.ts:220:27) {
+  isAxiosError: true,
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http', 'fetch' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 10000,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.13.4',
+      'Content-Length': '197',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.patentsview.org/patents/query',
+    data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Clopidogrel"}},{"assignee_organization":"Sanofi"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+    allowAbsoluteUrls: true
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '197',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.patentsview.org',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.patentsview.org',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      timeout: 10000,
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 32523,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: Timeout {
+        _idleTimeout: 10000,
+        _idlePrev: [TimersList],
+        _idleNext: [TimersList],
+        _idleStart: 132637,
+        _onTimeout: [Function: bound ],
+        _timerArgs: undefined,
+        _repeat: null,
+        _destroyed: false,
+        [Symbol(refed)]: false,
+        [Symbol(kHasPrimitive)]: false,
+        [Symbol(asyncId)]: 32531,
+        [Symbol(triggerId)]: 32526
+      },
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /patents/query HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.13.4\r\n' +
+      'Content-Length: 197\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.patentsview.org\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/patents/query',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 410,
+      statusMessage: 'Gone',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.patentsview.org/patents/query',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 10,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.patentsview.org',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 197,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.patentsview.org/patents/query',
+      _timeout: null,
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 410,
+    statusText: 'Gone',
+    headers: Object [AxiosHeaders] {
+      server: 'awselb/2.0',
+      date: 'Thu, 05 Feb 2026 12:42:12 GMT',
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': '39',
+      connection: 'close'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.patentsview.org/patents/query',
+      data: '{"q":{"_and":[{"_text_phrase":{"patent_abstract":"Clopidogrel"}},{"assignee_organization":"Sanofi"}]},"f":["patent_number","patent_date","patent_title","assignee_organization"],"o":{"per_page":25}}',
+      allowAbsoluteUrls: true
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '197',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /patents/query HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.13.4\r\n' +
+        'Content-Length: 197\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.patentsview.org\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/patents/query',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.patentsview.org',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: true, reason: 'discontinued' }
+  },
+  status: 410
+}
+[Curated] Found 0 curated patents for Clopidogrel
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Clopidogrel
+[Real Patents] ⚠️ NO DATA FOUND for Clopidogrel
+
+[Real Patents] Fetching for Lisinopril...
+[Orange Book] Loading data for Lisinopril...
+[Orange Book] Found 32 patents for LISINOPRIL
+[Real Patents] ✅ 32 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 1 Indian patents for Lisinopril
+[Real Patents] ✅ 1 Indian patents
+[Real Patents] 🎯 Total: 33 patents (US: 32, IN: 1)
+
+[Real Patents] Fetching for Amlodipine...
+[Orange Book] Loading data for Amlodipine...
+[Orange Book] Found 50 patents for AMLODIPINE
+[Real Patents] ✅ 50 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Amlodipine
+[Real Patents] 🎯 Total: 50 patents (US: 50, IN: 0)
+
+[Real Patents] Fetching for Losartan...
+[Orange Book] Loading data for Losartan...
+[Orange Book] Found 4 patents for LOSARTAN
+[Real Patents] ✅ 4 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Losartan
+[Real Patents] 🎯 Total: 4 patents (US: 4, IN: 0)
+
+[Real Patents] Fetching for Valsartan...
+[Orange Book] Loading data for Valsartan...
+[Orange Book] Found 42 patents for VALSARTAN
+[Real Patents] ✅ 42 US patents from Orange Book
+[India Patents] Loaded 13 curated Indian patents
+[India Patents] Found 0 Indian patents for Valsartan
+[Real Patents] 🎯 Total: 42 patents (US: 42, IN: 0)
+   Molecules: 24
+   Clinical Trials: 436
+   Patents: 1820
+   Regulatory Statuses: 48
+   Disease Markets: 12
+
+🗑️  STEP 4: Clearing existing database...
+
+🗑️  Clearing existing data...
+   ✅ Database cleared
+
+💾 STEP 5: Seeding database with real data...
+
+
+📦 Seeding molecules...
+   ✅ Created 24 molecules
+
+🔬 Seeding clinical trials...
+   ✅ Created 436 clinical trials
+
+📜 Seeding patents...
+   ✅ Created 1820 patents
+
+📋 Seeding regulatory statuses...
+   ✅ Created 48 regulatory statuses
+
+📊 Seeding disease market data...
+   ✅ Created 12 disease market records
+
+📊 STEP 6: Verifying seeded data...
+
+   Database Statistics:
+   ├── Molecules: 24
+   ├── Clinical Trials: 436
+   ├── Patents: 1820
+   ├── Regulatory Statuses: 48
+   └── Disease Markets: 12
+
+📋 Sample Data:
+   Molecule: Semaglutide (Ozempic)
+   └── Indication: Type 2 Diabetes
+   └── Innovator: Novo Nordisk
+   └── Launch Year: 2017
+
+   Trial: NCT03136484
+   └── Molecule: Semaglutide
+   └── Phase: Phase III
+   └── Sponsor: Novo Nordisk A/S
+
+═══════════════════════════════════════════════════════════════
+   ✅ SEED COMPLETED SUCCESSFULLY!
+═══════════════════════════════════════════════════════════════
+

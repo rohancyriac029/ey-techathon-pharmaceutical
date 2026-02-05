@@ -1,0 +1,15 @@
+
+> pharma-agent-backend@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/index.ts
+
+[INFO] 18:26:56 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+[dotenv@17.2.3] injecting env (3) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+🗑️ Cache cleared on startup (version: v4)
+[dotenv@17.2.3] injecting env (0) from .env -- tip: 🔄 add secrets lifecycle management: https://dotenvx.com/ops
+🚀 Server running on http://localhost:3001
+📊 API endpoints:
+   POST http://localhost:3001/api/query
+   GET  http://localhost:3001/api/jobs/:id
+   GET  http://localhost:3001/api/jobs/:id/trace
+   GET  http://localhost:3001/api/jobs/:id/report
+   GET  http://localhost:3001/api/reports/:id/pdf
