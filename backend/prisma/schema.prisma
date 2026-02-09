@@ -186,3 +186,91 @@ model MarketGrowth {
 
   @@unique([disease, country, year])
 }
+
+// ============================================
+// NEW: Patient-Level Epidemiology Data
+// ============================================
+
+model DiseaseEpidemiology {
+  id                   String    @id @default(cuid())
+  disease              String
+  country              String    // US, IN, GLOBAL
+  year                 Int
+  
+  // Patient counts (absolute numbers)
+  prevalenceTotal      Int       // Total living with disease
+  incidenceAnnual      Int       // New cases per year
+  mortalityAnnual      Int       // Deaths per year
+  
+  // Rates per 100,000
+  prevalenceRate       Float
+  incidenceRate        Float
+  mortalityRate        Float
+  
+  // Treatment funnel
+  diagnosedPercent     Float     // % diagnosed
+  treatedPercent       Float     // % receiving treatment
+  controlledPercent    Float?    // % achieving goals
+  
+  // Demographics
+  malePercent          Float?
+  femalePercent        Float?
+  avgAgeAtDiagnosis    Float?
+  age65PlusPercent     Float?
+  
+  // Trends (YoY change %)
+  prevalenceChangeYoY  Float?
+  incidenceChangeYoY   Float?
+  mortalityChangeYoY   Float?
+  
+  // Data quality
+  dataSource           String
+  sourceUrl            String?
+  publicationYear      Int
+  confidence           String    @default("MEDIUM")
+  notes                String?
+  createdAt            DateTime  @default(now())
+
+  @@unique([disease, country, year])
+}
+
+model DrugUtilization {
+  id                     String   @id @default(cuid())
+  molecule               String
+  country                String
+  year                   Int
+  
+  // Patient counts
+  totalPatientsOnDrug    Int
+  newPatientsAnnual      Int?
+  discontinuationRate    Float?
+  
+  // Prescriptions
+  totalPrescriptions     Int
+  prescriptionsPerPatient Float?
+  
+  // Trends
+  patientCountChangeYoY  Float?
+  prescriptionChangeYoY  Float?
+  marketSharePercent     Float?
+  
+  dataSource             String
+  sourceUrl              String?
+  confidence             String   @default("MEDIUM")
+  createdAt              DateTime @default(now())
+
+  @@unique([molecule, country, year])
+}
+
+model EpidemiologyTrend {
+  id         String   @id @default(cuid())
+  disease    String
+  country    String
+  metric     String   // prevalence, incidence, mortality, treatment_rate
+  year       Int
+  value      Float
+  dataSource String
+  createdAt  DateTime @default(now())
+
+  @@unique([disease, country, metric, year])
+}

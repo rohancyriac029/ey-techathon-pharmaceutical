@@ -52,6 +52,9 @@ export interface ReportPayload {
     yearsToExpiry: number;
   }>;
   
+  // NEW: Patient-level epidemiology data
+  epidemiologyOverview?: EpidemiologyOverview;
+  
   // PDF path
   pdfPath?: string;
   
@@ -64,6 +67,65 @@ export interface ReportPayload {
   marketInsights?: MarketInsights;
   patentCliff?: PatentCliffData;
   suggestedQueries?: string[];
+}
+
+// ============================================
+// NEW: Epidemiology Data Types
+// ============================================
+
+export interface DiseaseEpidemiologyData {
+  disease: string;
+  country: 'US' | 'IN' | 'GLOBAL';
+  year: number;
+  prevalenceTotal: number;
+  incidenceAnnual: number;
+  mortalityAnnual: number;
+  prevalenceRate: number;
+  incidenceRate: number;
+  mortalityRate: number;
+  diagnosedPercent: number;
+  treatedPercent: number;
+  controlledPercent?: number;
+  malePercent?: number;
+  femalePercent?: number;
+  avgAgeAtDiagnosis?: number;
+  age65PlusPercent?: number;
+  prevalenceChangeYoY?: number;
+  incidenceChangeYoY?: number;
+  mortalityChangeYoY?: number;
+  dataSource: string;
+  sourceUrl?: string;
+  confidence: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface DrugUtilizationData {
+  molecule: string;
+  country: 'US' | 'IN';
+  year: number;
+  totalPatientsOnDrug: number;
+  newPatientsAnnual?: number;
+  discontinuationRate?: number;
+  totalPrescriptions: number;
+  prescriptionsPerPatient?: number;
+  patientCountChangeYoY?: number;
+  marketSharePercent?: number;
+  dataSource: string;
+  confidence: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface HistoricalTrendData {
+  disease: string;
+  country: string;
+  metric: string;
+  years: number[];
+  values: number[];
+  dataSource: string;
+}
+
+export interface EpidemiologyOverview {
+  diseases: DiseaseEpidemiologyData[];
+  drugUtilization: DrugUtilizationData[];
+  trends: HistoricalTrendData[];
 }
 
 export interface ReportResponse {
@@ -97,10 +159,15 @@ export interface ReportResponse {
   
   upcomingPatentExpiries: Array<{
     molecule: string;
+  upcomingPatentExpiries: Array<{
+    molecule: string;
     country: 'IN' | 'US';
     expiryDate: string;
     yearsToExpiry: number;
   }>;
+  
+  // NEW: Patient-level epidemiology data
+  epidemiologyOverview?: EpidemiologyOverview;
   
   pdfUrl: string;
   createdAt: string;

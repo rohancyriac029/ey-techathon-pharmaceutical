@@ -90,6 +90,76 @@ export interface PatentExpiry {
 }
 
 // ============================================
+// NEW: Patient-Level Epidemiology Types
+// ============================================
+
+export interface DiseaseEpidemiology {
+  disease: string;
+  country: 'US' | 'IN' | 'GLOBAL';
+  year: number;
+  
+  // Patient counts
+  prevalenceTotal: number;
+  incidenceAnnual: number;
+  mortalityAnnual: number;
+  
+  // Rates per 100,000
+  prevalenceRate: number;
+  incidenceRate: number;
+  mortalityRate: number;
+  
+  // Treatment funnel
+  diagnosedPercent: number;
+  treatedPercent: number;
+  controlledPercent?: number;
+  
+  // Demographics
+  malePercent?: number;
+  femalePercent?: number;
+  avgAgeAtDiagnosis?: number;
+  age65PlusPercent?: number;
+  
+  // Trends
+  prevalenceChangeYoY?: number;
+  incidenceChangeYoY?: number;
+  mortalityChangeYoY?: number;
+  
+  dataSource: string;
+  sourceUrl?: string;
+  confidence: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface DrugUtilization {
+  molecule: string;
+  country: 'US' | 'IN';
+  year: number;
+  totalPatientsOnDrug: number;
+  newPatientsAnnual?: number;
+  discontinuationRate?: number;
+  totalPrescriptions: number;
+  prescriptionsPerPatient?: number;
+  patientCountChangeYoY?: number;
+  marketSharePercent?: number;
+  dataSource: string;
+  confidence: 'HIGH' | 'MEDIUM' | 'LOW';
+}
+
+export interface HistoricalTrend {
+  disease: string;
+  country: string;
+  metric: string;
+  years: number[];
+  values: number[];
+  dataSource: string;
+}
+
+export interface EpidemiologyOverview {
+  diseases: DiseaseEpidemiology[];
+  drugUtilization: DrugUtilization[];
+  trends: HistoricalTrend[];
+}
+
+// ============================================
 // Legacy Types (for backward compatibility)
 // ============================================
 
@@ -219,6 +289,9 @@ export interface ReportResponse {
   marketOverview: MarketOverview;
   strategySummary: StrategySummary;
   upcomingPatentExpiries: PatentExpiry[];
+  
+  // NEW: Patient-level epidemiology data
+  epidemiologyOverview?: EpidemiologyOverview;
   
   recommendations: string[];
   pdfUrl: string;

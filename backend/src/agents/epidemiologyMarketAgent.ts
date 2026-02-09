@@ -92,9 +92,13 @@ export async function runEpidemiologyMarketAgent(
         // Get growth data for this country
         const growthData = growthRecords.find(g => g.country === country);
         
-        // Calculate market size if not already set
+        // Calculate treated patient population
+        const treatedPatients = record.prevalenceMillions * (record.treatedRatePercent / 100) * 1_000_000;
+        
+        // Calculate market size - this is the DRUG MARKET SIZE (not total disease cost)
+        // Uses pre-calculated realistic drug market values from seed data
         const calculatedMarketSize = record.marketSizeUSD || 
-          (record.prevalenceMillions * (record.treatedRatePercent / 100) * record.avgAnnualTherapyCostUSD * 1_000_000);
+          (treatedPatients * record.avgAnnualTherapyCostUSD);
 
         const marketDataEntry: DiseaseMarketData = {
           disease: record.disease,
@@ -118,10 +122,27 @@ export async function runEpidemiologyMarketAgent(
         
         // Get pricing data for this country
         const countryPricing = pricingRecords.find(p => p.country === country);
+        
+        // Format helper for millions/billions
+        const formatMarketSize = (value: number): string => {
+          if (value >= 1_000_000_000) {
+            return `$${(value / 1_000_000_000).toFixed(2)}B`;
+          } else if (value >= 1_000_000) {
+            return `$${(value / 1_000_000).toFixed(0)}M`;
+          }
+          return `$${value.toLocaleString()}`;
+        };
 
         // Calculate market share based on REAL competition data
         let marketSharePct: number;
         let explanation: string;
+        
+        // Base explanation with patient data context
+        const treatedPatientsFormatted = treatedPatients >= 1_000_000 
+          ? `${(treatedPatients / 1_000_000).toFixed(1)}M`
+          : `${(treatedPatients / 1000).toFixed(0)}K`;
+        
+        const baseContext = `Drug market: ${formatMarketSize(calculatedMarketSize)} (${treatedPatientsFormatted} treated patients). `;
 
         if (countryCompetition) {
           // Use real competition data to calculate market share
@@ -132,11 +153,11 @@ export async function runEpidemiologyMarketAgent(
           if (competitionIntensity === 'LOW') {
             // Low competition - can capture more market
             marketSharePct = 15;
-            explanation = `Low competition (${genericApprovals} generic approvals). Estimated ${marketSharePct}% market share achievable.`;
+            explanation = baseContext + `Low competition (${genericApprovals} generics). Achievable share: ${marketSharePct}%.`;
           } else if (competitionIntensity === 'MEDIUM') {
             // Medium competition
             marketSharePct = 8;
-            explanation = `Medium competition (${genericApprovals} generics, ${countryCompetition.activeManufacturers} active manufacturers). Estimated ${marketSharePct}% share.`;
+            explanation = baseContext + `Medium competition (${genericApprovals} generics, ${countryCompetition.activeManufacturers} manufacturers). Share: ${marketSharePct}%.`;
           } else {
             // High competition - share depends on number of players
             if (genericApprovals <= 10) {
@@ -146,23 +167,23 @@ export async function runEpidemiologyMarketAgent(
             } else {
               marketSharePct = 2;
             }
-            explanation = `High competition (${genericApprovals} generics, ${countryCompetition.activeManufacturers} manufacturers). Realistic share: ${marketSharePct}%.`;
+            explanation = baseContext + `High competition (${genericApprovals} generics). Realistic share: ${marketSharePct}%.`;
           }
           
           // If generic market exists, we compete in that segment
           if (genericPenetration > 0) {
             const genericMarketSize = calculatedMarketSize * (genericPenetration / 100);
             estimatedRevenueUSD[country] = Math.round(genericMarketSize * (marketSharePct / 100));
-            explanation += ` Generic segment: ${genericPenetration}% of market ($${(genericMarketSize / 1_000_000_000).toFixed(2)}B).`;
+            explanation += ` Generic segment: ${genericPenetration}% (${formatMarketSize(genericMarketSize)}).`;
           } else {
             // Brand market - need licensing
             estimatedRevenueUSD[country] = Math.round(calculatedMarketSize * (marketSharePct / 100));
-            explanation += ' Brand-only market - licensing required for entry.';
+            explanation += ' Brand-only market - licensing required.';
           }
         } else {
           // Fallback to old logic if no competition data
           marketSharePct = country === 'IN' ? 8 : 6;
-          explanation = `Estimated ${marketSharePct}% market share (no detailed competition data available).`;
+          explanation = baseContext + `Est. ${marketSharePct}% share (limited competition data).`;
           estimatedRevenueUSD[country] = Math.round(calculatedMarketSize * (marketSharePct / 100));
         }
 

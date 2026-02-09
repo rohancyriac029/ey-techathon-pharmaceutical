@@ -52,6 +52,9 @@ router.get('/:jobId/report', async (req, res) => {
       },
       upcomingPatentExpiries: reportData?.upcomingPatentExpiries || [],
       
+      // NEW: Patient-level epidemiology data
+      epidemiologyOverview: reportData?.epidemiologyOverview || null,
+      
       recommendations: reportData?.recommendations || [],
       pdfUrl: `/api/reports/${report.id}/pdf`,
       createdAt: report.createdAt,

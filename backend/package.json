@@ -16,7 +16,10 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts",
     "prisma:seed:real": "ts-node prisma/seedRealData.ts",
-    "seed:real": "ts-node prisma/seedRealData.ts"
+    "prisma:seed:epi": "ts-node prisma/seedEpidemiologyData.ts",
+    "seed:real": "ts-node prisma/seedRealData.ts",
+    "seed:epi": "ts-node prisma/seedEpidemiologyData.ts",
+    "seed:all": "npm run prisma:seed && npm run seed:epi"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

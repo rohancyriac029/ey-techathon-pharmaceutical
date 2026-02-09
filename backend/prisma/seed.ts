@@ -388,13 +388,14 @@ async function main() {
   console.log(`   ✅ Created ${patents.count} patents`);
 
   // ============================================
-  // 3. DISEASE MARKET DATA (Epidemiology)
+  // 3. DISEASE MARKET DATA (Drug-Specific Market Sizing)
+  // These are DRUG MARKET sizes, not total disease costs
   // ============================================
   console.log('📊 Seeding disease market data...');
 
   const diseaseMarkets = await prisma.diseaseMarket.createMany({
     data: [
-      // === TYPE 2 DIABETES ===
+      // === TYPE 2 DIABETES (GLP-1/DPP-4/SGLT-2 Drug Markets) ===
       {
         disease: 'Type 2 Diabetes',
         country: 'US',
@@ -402,8 +403,8 @@ async function main() {
         prevalenceMillions: 37.3,        // CDC estimates
         incidenceMillions: 1.4,
         treatedRatePercent: 75.0,        // High treatment rate in US
-        avgAnnualTherapyCostUSD: 9800,   // Average branded therapy cost
-        marketSizeUSD: 274.3e9,          // ~$274B market
+        avgAnnualTherapyCostUSD: 3200,   // Avg across diabetes drug classes
+        marketSizeUSD: 42.5e9,           // $42.5B - Total US diabetes drug market (IQVIA 2024)
         dataSource: 'CDC / IQVIA 2024',
       },
       {
@@ -414,11 +415,11 @@ async function main() {
         incidenceMillions: 8.5,
         treatedRatePercent: 45.0,        // Lower treatment in India
         avgAnnualTherapyCostUSD: 180,    // Much lower costs
-        marketSizeUSD: 8.2e9,            // ~$8.2B market
+        marketSizeUSD: 6.3e9,            // $6.3B - India diabetes drug market
         dataSource: 'IDF Atlas / IQVIA India 2024',
       },
 
-      // === COPD ===
+      // === COPD (Respiratory Drug Market) ===
       {
         disease: 'COPD',
         country: 'US',
@@ -426,8 +427,8 @@ async function main() {
         prevalenceMillions: 16.0,        // GOLD Report
         incidenceMillions: 0.7,
         treatedRatePercent: 60.0,
-        avgAnnualTherapyCostUSD: 4200,
-        marketSizeUSD: 40.3e9,           // ~$40B market
+        avgAnnualTherapyCostUSD: 2400,   // Inhalers + therapy
+        marketSizeUSD: 18.5e9,           // $18.5B - US COPD drug market
         dataSource: 'GOLD Report / IQVIA 2024',
       },
       {
@@ -437,21 +438,21 @@ async function main() {
         prevalenceMillions: 55.0,        // High burden in India
         incidenceMillions: 4.2,
         treatedRatePercent: 25.0,        // Very low treatment rate
-        avgAnnualTherapyCostUSD: 85,     // Low cost therapies
-        marketSizeUSD: 1.2e9,            // ~$1.2B market
+        avgAnnualTherapyCostUSD: 120,    // Low cost therapies
+        marketSizeUSD: 1.65e9,           // $1.65B - India COPD drug market
         dataSource: 'ICMR / GBD Study 2024',
       },
 
-      // === NSCLC ===
+      // === NSCLC (Lung Cancer Drug Market) ===
       {
         disease: 'NSCLC',
         country: 'US',
         year: 2025,
         prevalenceMillions: 0.54,        // ~540,000 patients
         incidenceMillions: 0.2,          // ~200K new cases/year
-        treatedRatePercent: 85.0,
-        avgAnnualTherapyCostUSD: 150000, // High oncology costs
-        marketSizeUSD: 68.9e9,           // ~$69B market
+        treatedRatePercent: 55.0,        // Many patients too advanced
+        avgAnnualTherapyCostUSD: 60000,  // Mix of targeted/IO/chemo
+        marketSizeUSD: 15.8e9,           // $15.8B - US lung cancer drug market
         dataSource: 'SEER / IQVIA 2024',
       },
       {
@@ -460,9 +461,9 @@ async function main() {
         year: 2025,
         prevalenceMillions: 0.95,        // High incidence
         incidenceMillions: 0.35,
-        treatedRatePercent: 30.0,        // Low treatment access
-        avgAnnualTherapyCostUSD: 8500,   // Lower but still high
-        marketSizeUSD: 2.4e9,            // ~$2.4B market
+        treatedRatePercent: 35.0,        // Low treatment access
+        avgAnnualTherapyCostUSD: 8500,   // Generic/biosimilar available
+        marketSizeUSD: 2.4e9,            // $2.4B - India lung cancer drug market
         dataSource: 'ICMR Cancer Registry 2024',
       },
     ],

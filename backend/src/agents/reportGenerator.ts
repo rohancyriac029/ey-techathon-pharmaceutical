@@ -9,9 +9,23 @@ import {
   EpidemiologyMarketAgentResult,
   CommercialStrategy,
 } from '../types/agent';
-import { ReportPayload } from '../types/report';
+import { ReportPayload, EpidemiologyOverview } from '../types/report';
+import { 
+  getEpidemiologyData, 
+  getDrugUtilization,
+  getHistoricalTrends,
+  HISTORICAL_TRENDS 
+} from '../services/epidemiologyDataService';
 
 const prisma = new PrismaClient();
+
+// Helper to format patient counts
+function formatPatientCount(count: number): string {
+  if (count >= 1_000_000_000) return `${(count / 1_000_000_000).toFixed(1)} billion`;
+  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)} million`;
+  if (count >= 1_000) return `${(count / 1_000).toFixed(0)}K`;
+  return count.toLocaleString();
+}
 
 /**
  * Generate a detailed fallback summary when AI is unavailable
@@ -22,7 +36,8 @@ function generateFallbackSummary(
   totalAddressableMarketUSD: number,
   strategySummary: { generic: string[]; license: string[]; wait: string[]; drop: string[] },
   topDecisions: MoleculeDecision[],
-  filterCriteria: { indication?: string; country?: string }
+  filterCriteria: { indication?: string; country?: string },
+  epidemiologyData?: EpidemiologyOverview
 ): string {
   const marketB = (totalAddressableMarketUSD / 1_000_000_000).toFixed(1);
   const indication = filterCriteria.indication || 'multiple therapeutic areas';
@@ -30,8 +45,27 @@ function generateFallbackSummary(
   // Build a rich summary based on the actual data
   let summary = `**Executive Summary: ${indication} Market Analysis**\n\n`;
   
+  // Add patient epidemiology context if available
+  if (epidemiologyData && epidemiologyData.diseases.length > 0) {
+    const usEpi = epidemiologyData.diseases.find(d => d.country === 'US');
+    const inEpi = epidemiologyData.diseases.find(d => d.country === 'IN');
+    
+    summary += `**Patient Population & Unmet Need:**\n`;
+    if (usEpi) {
+      summary += `In the United States, ${formatPatientCount(usEpi.prevalenceTotal)} patients live with ${usEpi.disease}, `;
+      summary += `with ${formatPatientCount(usEpi.incidenceAnnual)} new cases annually. `;
+      summary += `Only ${usEpi.diagnosedPercent}% are diagnosed and ${usEpi.treatedPercent}% receive treatment, `;
+      summary += `highlighting significant unmet medical need. `;
+    }
+    if (inEpi) {
+      summary += `India has ${formatPatientCount(inEpi.prevalenceTotal)} patients with ${inEpi.disease}, `;
+      summary += `but only ${inEpi.treatedPercent}% are treated, representing a major market opportunity. `;
+    }
+    summary += '\n\n';
+  }
+  
   summary += `This analysis evaluated ${decisionSummary.totalMolecules} molecules for ${indication}, `;
-  summary += `representing a total addressable market of $${marketB} billion across India and US markets. `;
+  summary += `representing a drug market opportunity of $${marketB} billion across India and US markets. `;
   
   if (decisionSummary.genericOpportunities > 0) {
     const topGenerics = strategySummary.generic.slice(0, 3);
@@ -235,15 +269,120 @@ export async function generateReport(params: GenerateReportParams): Promise<stri
     // Sort by expiry date
     upcomingPatentExpiries.sort((a, b) => a.yearsToExpiry - b.yearsToExpiry);
 
+    // ============================================
+    // NEW: Fetch epidemiology data for relevant diseases
+    // ============================================
+    const epidemiologyOverview: EpidemiologyOverview = {
+      diseases: [],
+      drugUtilization: [],
+      trends: [],
+    };
+
+    // Get unique indications from the analyzed molecules
+    const indications = Array.from(selectedIndications);
+    
+    for (const indication of indications) {
+      // Get disease epidemiology data
+      const epiData = getEpidemiologyData(indication);
+      epidemiologyOverview.diseases.push(...epiData.map(e => ({
+        disease: e.disease,
+        country: e.country,
+        year: e.year,
+        prevalenceTotal: e.prevalenceTotal,
+        incidenceAnnual: e.incidenceAnnual,
+        mortalityAnnual: e.mortalityAnnual,
+        prevalenceRate: e.prevalenceRate,
+        incidenceRate: e.incidenceRate,
+        mortalityRate: e.mortalityRate,
+        diagnosedPercent: e.diagnosedPercent,
+        treatedPercent: e.treatedPercent,
+        controlledPercent: e.controlledPercent,
+        malePercent: e.malePercent,
+        femalePercent: e.femalePercent,
+        avgAgeAtDiagnosis: e.avgAgeAtDiagnosis,
+        age65PlusPercent: e.age65PlusPercent,
+        prevalenceChangeYoY: e.prevalenceChangeYoY,
+        incidenceChangeYoY: e.incidenceChangeYoY,
+        mortalityChangeYoY: e.mortalityChangeYoY,
+        dataSource: e.dataSource,
+        sourceUrl: e.sourceUrl,
+        confidence: e.confidence,
+      })));
+
+      // Get historical trends
+      const trends = getHistoricalTrends(indication, 'US');
+      epidemiologyOverview.trends.push(...trends.map(t => ({
+        disease: t.disease,
+        country: t.country,
+        metric: t.metric,
+        years: t.years,
+        values: t.values,
+        dataSource: t.dataSource,
+      })));
+    }
+
+    // Get drug utilization for analyzed molecules
+    for (const decision of decisions) {
+      const utilData = getDrugUtilization(decision.molecule);
+      epidemiologyOverview.drugUtilization.push(...utilData.map(u => ({
+        molecule: u.molecule,
+        country: u.country,
+        year: u.year,
+        totalPatientsOnDrug: u.totalPatientsOnDrug,
+        newPatientsAnnual: u.newPatientsAnnual,
+        discontinuationRate: u.discontinuationRate,
+        totalPrescriptions: u.totalPrescriptions,
+        prescriptionsPerPatient: u.prescriptionsPerPatient,
+        patientCountChangeYoY: u.patientCountChangeYoY,
+        marketSharePercent: u.marketSharePercent,
+        dataSource: u.dataSource,
+        confidence: u.confidence,
+      })));
+    }
+
     // Generate executive summary with Gemini
     const topDecisions = decisions.slice(0, 3);
+    
+    // Build epidemiology summary for the prompt
+    const epiSummaryLines: string[] = [];
+    for (const epi of epidemiologyOverview.diseases) {
+      const countryName = epi.country === 'US' ? 'United States' : epi.country === 'IN' ? 'India' : 'Global';
+      const prevalence = epi.prevalenceTotal >= 1_000_000 
+        ? `${(epi.prevalenceTotal / 1_000_000).toFixed(1)}M` 
+        : `${(epi.prevalenceTotal / 1000).toFixed(0)}K`;
+      const incidence = epi.incidenceAnnual >= 1_000_000 
+        ? `${(epi.incidenceAnnual / 1_000_000).toFixed(1)}M` 
+        : `${(epi.incidenceAnnual / 1000).toFixed(0)}K`;
+      epiSummaryLines.push(
+        `- ${epi.disease} (${countryName}): ${prevalence} patients, ${incidence} new cases/year, ${epi.treatedPercent}% treated, ${epi.diagnosedPercent}% diagnosed`
+      );
+    }
+    
+    // Build drug utilization summary
+    const drugUtilLines: string[] = [];
+    for (const util of epidemiologyOverview.drugUtilization.slice(0, 5)) {
+      const patientCount = util.totalPatientsOnDrug >= 1_000_000 
+        ? `${(util.totalPatientsOnDrug / 1_000_000).toFixed(1)}M` 
+        : `${(util.totalPatientsOnDrug / 1000).toFixed(0)}K`;
+      const countryName = util.country === 'US' ? 'US' : 'India';
+      drugUtilLines.push(
+        `- ${util.molecule} (${countryName}): ${patientCount} patients on drug, ${util.marketSharePercent?.toFixed(1) || 'N/A'}% market share`
+      );
+    }
+    
     const summaryPrompt = `You are a pharmaceutical BD analyst. Write a concise executive summary (2-3 paragraphs) for a board presentation.
 
 Query: "${queryText}"
 
 Analysis Results:
 - Total molecules analyzed: ${decisionSummary.totalMolecules}
-- Total addressable market: $${(totalAddressableMarketUSD / 1_000_000_000).toFixed(1)}B
+- Total drug market opportunity: $${(totalAddressableMarketUSD / 1_000_000_000).toFixed(1)}B (combined IN + US)
+
+PATIENT EPIDEMIOLOGY DATA (from CDC, WHO, IDF, GOLD):
+${epiSummaryLines.length > 0 ? epiSummaryLines.join('\n') : '- No specific epidemiology data available for this indication'}
+
+DRUG UTILIZATION (current patient base for key molecules):
+${drugUtilLines.length > 0 ? drugUtilLines.join('\n') : '- No detailed drug utilization data available'}
 
 Commercial Recommendations:
 ${topDecisions.map(d => `- ${d.molecule} (${d.indication}): ${d.overallStrategy} - ${d.recommendations[0]?.rationale || 'See details'}`).join('\n')}
@@ -254,9 +393,12 @@ Strategy Breakdown:
 - WAIT: ${decisionSummary.waitOpportunities} molecules (2-4 year horizon)
 - DROP: ${decisionSummary.dropRecommendations} molecules (not recommended)
 
-Write a professional summary highlighting key commercial opportunities and strategic implications for BD leadership.`;
+Write a professional summary that:
+1. Highlights the patient population size and treatment gaps (using the epidemiology data)
+2. Connects patient unmet need to commercial opportunity
+3. Recommends priority molecules with clear rationale based on market size, patient base, and competition`;
 
-    let summary = generateFallbackSummary(queryText, decisionSummary, totalAddressableMarketUSD, strategySummary, topDecisions, filterCriteria);
+    let summary = generateFallbackSummary(queryText, decisionSummary, totalAddressableMarketUSD, strategySummary, topDecisions, filterCriteria, epidemiologyOverview);
     
     let recommendations: string[] = generateFallbackRecommendations(strategySummary, topDecisions);
 
@@ -305,6 +447,7 @@ Return only a JSON array of action items. Example:
       strategySummary,
       recommendations,
       upcomingPatentExpiries,
+      epidemiologyOverview: epidemiologyOverview.diseases.length > 0 ? epidemiologyOverview : undefined,
       // Legacy compatibility - store a calculated confidence
       confidence: calculateOverallConfidence(decisions),
     };

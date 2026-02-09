@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
-import type { ReportResponse, MoleculeDecision, CountryRecommendation, CommercialStrategy } from '../api/client';
+import type { ReportResponse, MoleculeDecision, CountryRecommendation, CommercialStrategy, DiseaseEpidemiology, DrugUtilization } from '../api/client';
 
 interface DashboardProps {
   report: ReportResponse;
   onSuggestedQuery?: (query: string) => void;
 }
+
+// Format large numbers for display
+const formatPatientCount = (count: number): string => {
+  if (count >= 1_000_000_000) return `${(count / 1_000_000_000).toFixed(1)}B`;
+  if (count >= 1_000_000) return `${(count / 1_000_000).toFixed(1)}M`;
+  if (count >= 1_000) return `${(count / 1_000).toFixed(0)}K`;
+  return count.toLocaleString();
+};
 
 // Simple markdown to JSX converter for executive summary
 const renderMarkdown = (text: string) => {
@@ -345,36 +353,148 @@ export const Dashboard: React.FC<DashboardProps> = ({ report, onSuggestedQuery }
         </div>
       </div>
 
-      {/* Market Overview */}
-      {report.marketOverview && report.marketOverview.totalAddressableMarketUSD > 0 && (
+      {/* NEW: Patient Epidemiology Section */}
+      {report.epidemiologyOverview && report.epidemiologyOverview.diseases && report.epidemiologyOverview.diseases.length > 0 && (
         <div className="bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-4">💰 Market Overview</h3>
-          <div className="text-center mb-6">
-            <div className="text-sm text-gray-500">Total Addressable Market</div>
-            <div className="text-4xl font-bold text-green-600">
-              {formatCurrency(report.marketOverview.totalAddressableMarketUSD)}
-            </div>
-          </div>
+          <h3 className="text-lg font-bold text-gray-800 mb-4">🏥 Patient Epidemiology</h3>
+          <p className="text-sm text-gray-500 mb-4">Real patient data from CDC, WHO, GOLD, IDF, and other verified sources</p>
           
-          {report.marketOverview.byIndication && report.marketOverview.byIndication.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {report.marketOverview.byIndication.map((ind) => (
-                <div key={ind.indication} className="border rounded-lg p-4 text-center">
-                  <div className="font-semibold text-gray-800 mb-2">{ind.indication}</div>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                      <div className="text-gray-500">🇮🇳 India</div>
-                      <div className="font-semibold">{formatCurrency(ind.marketSizeIN)}</div>
-                    </div>
-                    <div>
-                      <div className="text-gray-500">🇺🇸 US</div>
-                      <div className="font-semibold">{formatCurrency(ind.marketSizeUS)}</div>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {report.epidemiologyOverview.diseases.map((epi, idx) => (
+              <div key={idx} className="border rounded-lg p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h4 className="font-bold text-gray-800">{epi.disease}</h4>
+                    <span className="text-sm text-gray-500">
+                      {epi.country === 'IN' ? '🇮🇳 India' : epi.country === 'US' ? '🇺🇸 United States' : '🌍 Global'} • {epi.year}
+                    </span>
+                  </div>
+                  <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                    epi.confidence === 'HIGH' ? 'bg-green-100 text-green-700' : 
+                    epi.confidence === 'MEDIUM' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    {epi.confidence}
+                  </span>
+                </div>
+                
+                {/* Patient counts */}
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  <div className="text-center bg-white rounded p-2">
+                    <div className="text-xs text-gray-500">Patients</div>
+                    <div className="text-xl font-bold text-blue-600">{formatPatientCount(epi.prevalenceTotal)}</div>
+                  </div>
+                  <div className="text-center bg-white rounded p-2">
+                    <div className="text-xs text-gray-500">New/Year</div>
+                    <div className="text-xl font-bold text-orange-600">{formatPatientCount(epi.incidenceAnnual)}</div>
+                  </div>
+                  <div className="text-center bg-white rounded p-2">
+                    <div className="text-xs text-gray-500">Deaths/Year</div>
+                    <div className="text-xl font-bold text-red-600">{formatPatientCount(epi.mortalityAnnual)}</div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
+                
+                {/* Treatment funnel */}
+                <div className="mb-3">
+                  <div className="text-xs text-gray-500 mb-1">Treatment Funnel</div>
+                  <div className="flex items-center gap-1 text-sm">
+                    <span className="bg-gray-200 px-2 py-1 rounded">{epi.diagnosedPercent}% diagnosed</span>
+                    <span className="text-gray-400">→</span>
+                    <span className="bg-blue-200 px-2 py-1 rounded">{epi.treatedPercent}% treated</span>
+                    {epi.controlledPercent && (
+                      <>
+                        <span className="text-gray-400">→</span>
+                        <span className="bg-green-200 px-2 py-1 rounded">{epi.controlledPercent}% controlled</span>
+                      </>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Trends */}
+                {(epi.prevalenceChangeYoY !== undefined || epi.mortalityChangeYoY !== undefined) && (
+                  <div className="flex gap-4 text-sm">
+                    {epi.prevalenceChangeYoY !== undefined && (
+                      <div className="flex items-center gap-1">
+                        <span className={epi.prevalenceChangeYoY > 0 ? 'text-red-500' : 'text-green-500'}>
+                          {epi.prevalenceChangeYoY > 0 ? '↑' : '↓'}
+                        </span>
+                        <span className="text-gray-600">
+                          {Math.abs(epi.prevalenceChangeYoY).toFixed(1)}% prevalence YoY
+                        </span>
+                      </div>
+                    )}
+                    {epi.mortalityChangeYoY !== undefined && (
+                      <div className="flex items-center gap-1">
+                        <span className={epi.mortalityChangeYoY > 0 ? 'text-red-500' : 'text-green-500'}>
+                          {epi.mortalityChangeYoY > 0 ? '↑' : '↓'}
+                        </span>
+                        <span className="text-gray-600">
+                          {Math.abs(epi.mortalityChangeYoY).toFixed(1)}% mortality YoY
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                
+                {/* Data source */}
+                <div className="mt-3 pt-2 border-t text-xs text-gray-400">
+                  Source: {epi.dataSource}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* NEW: Drug Utilization Section */}
+      {report.epidemiologyOverview && report.epidemiologyOverview.drugUtilization && report.epidemiologyOverview.drugUtilization.length > 0 && (
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">💊 Drug Utilization</h3>
+          <p className="text-sm text-gray-500 mb-4">Patient counts and prescription data from CMS Medicare Part D</p>
+          
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Molecule</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Country</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Patients</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Prescriptions</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">Market Share</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold text-gray-600 uppercase">YoY Change</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {report.epidemiologyOverview.drugUtilization.map((util, idx) => (
+                  <tr key={idx} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 font-semibold text-gray-900">{util.molecule}</td>
+                    <td className="px-4 py-3">
+                      <span className="text-lg">{util.country === 'IN' ? '🇮🇳' : '🇺🇸'}</span>
+                    </td>
+                    <td className="px-4 py-3 text-right font-semibold text-blue-600">
+                      {formatPatientCount(util.totalPatientsOnDrug)}
+                    </td>
+                    <td className="px-4 py-3 text-right text-gray-700">
+                      {formatPatientCount(util.totalPrescriptions)}/yr
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      {util.marketSharePercent !== undefined && (
+                        <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded text-sm">
+                          {util.marketSharePercent}%
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      {util.patientCountChangeYoY !== undefined && (
+                        <span className={`font-semibold ${util.patientCountChangeYoY > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                          {util.patientCountChangeYoY > 0 ? '+' : ''}{util.patientCountChangeYoY}%
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

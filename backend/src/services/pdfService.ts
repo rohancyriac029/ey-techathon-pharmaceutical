@@ -56,15 +56,29 @@ class PdfService {
 
       // Market Overview
       if (payload.marketOverview) {
-        doc.fontSize(14).fillColor('#1a365d').text('Market Overview', { underline: true });
+        doc.fontSize(14).fillColor('#1a365d').text('Drug Market Overview', { underline: true });
         doc.moveDown(0.5);
+        
+        // Format market size appropriately
+        const totalMarket = payload.marketOverview.totalAddressableMarketUSD;
+        const formattedTotal = totalMarket >= 1_000_000_000 
+          ? `$${(totalMarket / 1_000_000_000).toFixed(1)}B` 
+          : `$${(totalMarket / 1_000_000).toFixed(0)}M`;
+          
         doc.fontSize(11).fillColor('#2d3748')
-          .text(`Total Addressable Market: $${(payload.marketOverview.totalAddressableMarketUSD / 1_000_000_000).toFixed(1)}B`);
+          .text(`Total Drug Market Opportunity: ${formattedTotal} (Combined IN + US)`);
         
         if (payload.marketOverview.byIndication) {
+          doc.fontSize(10).fillColor('#4a5568').text('By Therapeutic Area:');
           payload.marketOverview.byIndication.forEach(ind => {
+            const inMarket = ind.marketSizeIN >= 1_000_000_000 
+              ? `$${(ind.marketSizeIN / 1_000_000_000).toFixed(1)}B` 
+              : `$${(ind.marketSizeIN / 1_000_000).toFixed(0)}M`;
+            const usMarket = ind.marketSizeUS >= 1_000_000_000 
+              ? `$${(ind.marketSizeUS / 1_000_000_000).toFixed(1)}B` 
+              : `$${(ind.marketSizeUS / 1_000_000).toFixed(0)}M`;
             doc.fontSize(10).fillColor('#4a5568')
-              .text(`  • ${ind.indication}: IN $${(ind.marketSizeIN / 1_000_000_000).toFixed(1)}B | US $${(ind.marketSizeUS / 1_000_000_000).toFixed(1)}B`);
+              .text(`  • ${ind.indication}: India ${inMarket} | US ${usMarket}`);
           });
         }
         doc.moveDown(2);
